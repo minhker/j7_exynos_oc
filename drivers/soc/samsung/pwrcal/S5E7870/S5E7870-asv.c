@@ -752,7 +752,7 @@ static int dvfsmif_get_asv_table(unsigned int *table)
 	for (lv = 0; lv < max_lv; lv++)
 		{
 		//table[lv] = get_asv_voltage(cal_asv_dvfs_mif, lv);
-			table[lv]= 600000;
+			table[lv]= 606250;
 	//		table[0] = 600000;
 	//		table[1] = 600000;
 	//		table[2] = 600000;
@@ -772,7 +772,7 @@ static int dvfsint_get_asv_table(unsigned int *table)
 
 	for (lv = 0; lv < max_lv; lv++){ 
 		//	table[lv] = get_asv_voltage(cal_asv_dvfs_int, lv);
-			table[lv]= 600000;
+			table[lv]= 606250;
 	//		table[0] = 600000;
 	//		table[1] = 600000;
 	//		table[2] = 600000;
@@ -802,7 +802,9 @@ static int dvfscam_get_asv_table(unsigned int *table)
 
 	for (lv = 0; lv < max_lv; lv++)
 		table[lv] = get_asv_voltage(cal_asv_dvfs_cam, lv);
-
+		table[0]=600000;
+		table[1]=500000;
+		table[2]=400000;
 	return max_lv;
 }
 

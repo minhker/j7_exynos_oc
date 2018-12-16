@@ -485,7 +485,7 @@
 			regulators {
 				buck1_reg: BUCK1 {
 					regulator-name = "BUCK1";
-					regulator-min-microvolt = <500000>;
+					regulator-min-microvolt = <400000>;
 					regulator-max-microvolt = <1300000>;
 					regulator-always-on;
 					regulator-boot-on;
@@ -496,7 +496,7 @@
 
 				buck2_reg: BUCK2 {
 					regulator-name = "BUCK2";
-					regulator-min-microvolt = <500000>;
+					regulator-min-microvolt = <400000>;
 					regulator-max-microvolt = <1300000>;
 					regulator-always-on;
 					regulator-boot-on;
@@ -855,7 +855,7 @@
 			fuelgauge,fuel_int = <&gpa0 3 0>;
 			fuelgauge,fuel_alert_soc = <1>;
 			fuelgauge,capacity_max = <1000>;
-			fuelgauge,capacity_max_margin = <70>;
+			fuelgauge,capacity_max_margin = <150>;
 			fuelgauge,capacity_min = <0>;
 			fuelgauge,capacity_calculation_type = <28>;
 			fuelgauge,type_str = "SDI";
@@ -874,7 +874,7 @@
 		battery,full_check_current_2nd = <3000 0 0 3000 3000 3000 3000 3000 3000 0 3000 3000 0 0 0 3000 3000 3000 3000 3000 3000 0 3000 3000 3000 3000>;
 		battery,input_current_limit_new = <1800 0 0 1500 460 900 1000 460 1000 0 820 1900 1000 0 0 400 700 1300 300 1000 1500 0 1667 1000 80 1800>;
 		battery,fast_charging_current_new = <2100 0 0 1700 460 1200 1000 460 1200 0 1000 1600 1000 0 0 400 700 1300 300 1000 1500 0 3150 1000 80 1800>;
-		battery,recharge_condition_vcell = <4250>;
+		battery,recharge_condition_vcell = <4270>;  //4250
 	};
 
 
@@ -921,7 +921,7 @@
 		non_hw_trigger_levels = <7>;
 
 		/* Throttling Level */
-		trigger_levels_0 = <86>;
+		trigger_levels_0 = <91>;
 		trigger_levels_1 = <91>;
 		trigger_levels_2 = <96>;
 		trigger_levels_3 = <101>;
@@ -971,7 +971,7 @@
 		non_hw_trigger_levels = <7>;
 
 		/* Throttling Level */
-		trigger_levels_0 = <86>;
+		trigger_levels_0 = <91>;
 		trigger_levels_1 = <91>;
 		trigger_levels_2 = <96>;
 		trigger_levels_3 = <101>;
@@ -1087,6 +1087,9 @@
 
 		mif,ap_clk_table = <
 			/* khz */
+			1924000
+			1794000
+			1690000
 			1586000
 			1482000
 			1352000

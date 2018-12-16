@@ -463,7 +463,7 @@
 			regulators {
 				buck1_reg: BUCK1 {
 					regulator-name = "BUCK1";
-					regulator-min-microvolt = <500000>;
+					regulator-min-microvolt = <400000>;
 					regulator-max-microvolt = <1300000>;
 					regulator-always-on;
 					regulator-boot-on;
@@ -474,7 +474,7 @@
 
 				buck2_reg: BUCK2 {
 					regulator-name = "BUCK2";
-					regulator-min-microvolt = <500000>;
+					regulator-min-microvolt = <400000>;
 					regulator-max-microvolt = <1300000>;
 					regulator-always-on;
 					regulator-boot-on;
@@ -809,7 +809,7 @@
 		battery,chg_polarity_en = <0>;
 		battery,chg_gpio_status = <0>;
 		battery,chg_polarity_status = <0>;
-		battery,chg_float_voltage = <4400>;
+		battery,chg_float_voltage = <4390>;
 	};
 
 	s2mu005-fuelgauge@35 {
@@ -832,7 +832,7 @@
 			fuelgauge,fuel_int = <&gpa0 3 0>;
 			fuelgauge,fuel_alert_soc = <1>;
 			fuelgauge,capacity_max = <1000>;
-			fuelgauge,capacity_max_margin = <70>;
+			fuelgauge,capacity_max_margin = <150>;
 			fuelgauge,capacity_min = <0>;
 			fuelgauge,capacity_calculation_type = <28>;
 			fuelgauge,type_str = "SDI";
@@ -851,7 +851,7 @@
 		battery,full_check_current_2nd = <3000 0 0 3000 3000 3000 3000 3000 3000 0 3000 3000 0 0 0 3000 3000 3000 3000 3000 3000 0 3000 3000 3000 3000>;
 		battery,input_current_limit_new = <1800 0 0 1500 460 900 1000 460 1000 0 820 1900 1000 0 0 400 700 1300 300 1000 1500 0 1667 1000 80 1800>;
 		battery,fast_charging_current_new = <2100 0 0 1700 460 1200 1000 460 1200 0 1000 1600 1000 0 0 400 700 1300 300 1000 1500 0 3150 1000 80 1800>;
-		battery,recharge_condition_vcell = <4350>;
+		battery,recharge_condition_vcell = <4270>;  //4250
 	};
 
 
@@ -928,8 +928,8 @@
 		freq_tab_count = <5>;
 
 		freq_clip_max_0 = <1794000>;
-		freq_clip_max_1 = <1690000>;
-		freq_clip_max_2 = <1586000>;
+		freq_clip_max_1 = <1482000>;
+		freq_clip_max_2 = <1248000>;
 		freq_clip_max_3 = <546000>;
 		freq_clip_max_4 = <343000>;
 
@@ -978,8 +978,8 @@
 		freq_tab_count = <5>;
 
 		freq_clip_max_0 = <1794000>;
-		freq_clip_max_1 = <1690000>;
-		freq_clip_max_2 = <1586000>;
+		freq_clip_max_1 = <1482000>;
+		freq_clip_max_2 = <1248000>;
 		freq_clip_max_3 = <546000>;
 		freq_clip_max_4 = <343000>;
 
@@ -1079,13 +1079,13 @@
 			676000
 			546000
 			449000
-			343000
+			345000
 			>;
 
 		mif,mif_clk_table = <
 			/* khz */
 			902000
-			836000
+			825000
 			728000
 			676000
 			546000

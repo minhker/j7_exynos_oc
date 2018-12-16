@@ -442,7 +442,7 @@
 			regulators {
 				buck1_reg: BUCK1 {
 					regulator-name = "BUCK1";
-					regulator-min-microvolt = <500000>;
+					regulator-min-microvolt = <400000>;
 					regulator-max-microvolt = <1300000>;
 					regulator-always-on;
 					regulator-boot-on;
@@ -453,7 +453,7 @@
 
 				buck2_reg: BUCK2 {
 					regulator-name = "BUCK2";
-					regulator-min-microvolt = <500000>;
+					regulator-min-microvolt = <400000>;
 					regulator-max-microvolt = <1300000>;
 					regulator-always-on;
 					regulator-boot-on;
@@ -813,7 +813,7 @@
 	s2mu003-fuelgauge@35 {
 		fuelgauge,fuel_alert_soc = <1>;
 		fuelgauge,capacity_max = <1000>;
-		fuelgauge,capacity_max_margin = <30>;
+		fuelgauge,capacity_max_margin = <150>;
 		fuelgauge,capacity_min = <0>;
 		fuelgauge,capacity_calculation_type = <28>;
 		fuelgauge,repeated_fuelalert;
@@ -910,8 +910,8 @@
 		freq_tab_count = <5>;
 
 		freq_clip_max_0 = <1794000>;
-		freq_clip_max_1 = <1690000>;
-		freq_clip_max_2 = <1586000>;
+		freq_clip_max_1 = <1482000>;
+		freq_clip_max_2 = <1248000>;
 		freq_clip_max_3 = <546000>;
 		freq_clip_max_4 = <343000>;
 
@@ -960,8 +960,8 @@
 		freq_tab_count = <5>;
 
 		freq_clip_max_0 = <1794000>;
-		freq_clip_max_1 = <1690000>;
-		freq_clip_max_2 = <1586000>;
+		freq_clip_max_1 = <1482000>;
+		freq_clip_max_2 = <1248000>;
 		freq_clip_max_3 = <546000>;
 		freq_clip_max_4 = <343000>;
 
@@ -1061,13 +1061,13 @@
 			676000
 			546000
 			449000
-			343000
+			345000
 			>;
 
 		mif,mif_clk_table = <
 			/* khz */
 			902000
-			836000
+			825000
 			728000
 			676000
 			546000
@@ -1105,6 +1105,7 @@
 			#define DVFS_MIF_L3 676000
 			#define DVFS_MIF_L4 546000
 			#define DVFS_MIF_L5 451000
+			#define DVFS_MIF_L6 275000
 
 			table0 {
 				desc = "default Max version";
@@ -1114,19 +1115,19 @@
 				default_mif = <DVFS_MIF_L0>;
 				default_i2c = <0>;
 
-				front_preview_int = <DVFS_INT_L1>;
-				front_preview_cam = <DVFS_CAM_L1>;
-				front_preview_mif = <DVFS_MIF_L3>;
+				front_preview_int = <DVFS_INT_L0>;
+				front_preview_cam = <DVFS_CAM_L0>;
+				front_preview_mif = <DVFS_MIF_L0>;
 				front_preview_i2c = <0>;
 
-				front_capture_int = <DVFS_INT_L1>;
-				front_capture_cam = <DVFS_CAM_L1>;
-				front_capture_mif = <DVFS_MIF_L3>;
+				front_capture_int = <DVFS_INT_L0>;
+				front_capture_cam = <DVFS_CAM_L0>;
+				front_capture_mif = <DVFS_MIF_L0>;
 				front_capture_i2c = <0>;
 
-				front_video_int = <DVFS_INT_L1>;
-				front_video_cam = <DVFS_CAM_L1>;
-				front_video_mif = <DVFS_MIF_L3>;
+				front_video_int = <DVFS_INT_L0>;
+				front_video_cam = <DVFS_CAM_L0>;
+				front_video_mif = <DVFS_MIF_L0>;
 				front_video_i2c = <0>;
 
 				front_video_whd_int = <DVFS_INT_L0>;
@@ -1144,14 +1145,14 @@
 				front_video_whd_capture_mif = <DVFS_MIF_L0>;
 				front_video_whd_capture_i2c = <0>;
 
-				front_vt1_int = <DVFS_INT_L1>;
-				front_vt1_cam = <DVFS_CAM_L1>;
-				front_vt1_mif = <DVFS_MIF_L3>;
+				front_vt1_int = <DVFS_INT_L0>;
+				front_vt1_cam = <DVFS_CAM_L0>;
+				front_vt1_mif = <DVFS_MIF_L0>;
 				front_vt1_i2c = <0>;
 
-				front_vt2_int = <DVFS_INT_L1>;
-				front_vt2_cam = <DVFS_CAM_L1>;
-				front_vt2_mif = <DVFS_MIF_L3>;
+				front_vt2_int = <DVFS_INT_L0>;
+				front_vt2_cam = <DVFS_CAM_L0>;
+				front_vt2_mif = <DVFS_MIF_L0>;
 				front_vt2_i2c = <0>;
 
 				front_companion_preview_int = <DVFS_INT_L0>;
@@ -1206,7 +1207,7 @@
 
 				rear_video_fhd_int = <DVFS_INT_L0>;
 				rear_video_fhd_cam = <DVFS_CAM_L0>;
-				rear_video_fhd_mif = <DVFS_MIF_L1>;
+				rear_video_fhd_mif = <DVFS_MIF_L0>;
 				rear_video_fhd_i2c = <0>;
 
 				rear_video_uhd_int = <DVFS_INT_L0>;
@@ -1216,12 +1217,12 @@
 
 				rear_video_fhd_capture_int = <DVFS_INT_L0>;
 				rear_video_fhd_capture_cam = <DVFS_CAM_L0>;
-				rear_video_fhd_capture_mif = <DVFS_MIF_L1>;
+				rear_video_fhd_capture_mif = <DVFS_MIF_L0>;
 				rear_video_fhd_capture_i2c = <0>;
 
 				rear_video_uhd_capture_int = <DVFS_INT_L0>;
 				rear_video_uhd_capture_cam = <DVFS_CAM_L0>;
-				rear_video_uhd_capture_mif = <DVFS_MIF_L1>;
+				rear_video_uhd_capture_mif = <DVFS_MIF_L0>;
 				rear_video_uhd_capture_i2c = <0>;
 
 				dual_preview_int = <DVFS_INT_L0>;
