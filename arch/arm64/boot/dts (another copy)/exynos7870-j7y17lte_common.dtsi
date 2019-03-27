@@ -690,16 +690,14 @@
 		trigger_type_6 = <THROTTLE_ACTIVE>;
 		trigger_type_7 = <HW_TRIP>;
 
-		freq_tab_count = <8>;
+		freq_tab_count = <6>;
 
-		freq_clip_max_0 = <1794000>;
-		freq_clip_max_1 = <1690000>;
-		freq_clip_max_2 = <1586000>;
-		freq_clip_max_3 = <1482000>;
-		freq_clip_max_4 = <1352000>;
-		freq_clip_max_5 = <1248000>;
-		freq_clip_max_6 = <676000>;
-		freq_clip_max_7 = <343000>;
+		freq_clip_max_0 = <1586000>;
+		freq_clip_max_1 = <1248000>;
+		freq_clip_max_2 = <1014000>;
+		freq_clip_max_3 = <546000>;
+		freq_clip_max_4 = <449000>;
+		freq_clip_max_5 = <343000>;
 
 		cooling_level_0 = <96>;
 		cooling_level_1 = <96>;
@@ -746,16 +744,14 @@
 		trigger_type_6 = <THROTTLE_ACTIVE>;
 		trigger_type_7 = <HW_TRIP>;
 
-		freq_tab_count = <8>;
+		freq_tab_count = <6>;
 
-		freq_clip_max_0 = <1794000>;
-		freq_clip_max_1 = <1690000>;
-		freq_clip_max_2 = <1586000>;
-		freq_clip_max_3 = <1482000>;
-		freq_clip_max_4 = <1352000>;
-		freq_clip_max_5 = <1248000>;
-		freq_clip_max_6 = <676000>;
-		freq_clip_max_7 = <343000>;
+		freq_clip_max_0 = <1586000>;
+		freq_clip_max_1 = <1248000>;
+		freq_clip_max_2 = <1014000>;
+		freq_clip_max_3 = <9020000>;
+		freq_clip_max_4 = <9020000>;
+		freq_clip_max_5 = <9020000>;
 
 		cooling_level_0 = <96>;
 		cooling_level_1 = <96>;
@@ -808,11 +804,11 @@
 
 		freq_tab_count = <6>;
 
-		freq_clip_max_0 = <1246000>;
-		freq_clip_max_1 = <1146000>;
-		freq_clip_max_2 = <1001000>;
-		freq_clip_max_3 = <845000>;
-		freq_clip_max_4 = <545000>;
+		freq_clip_max_0 = <1146000>;
+		freq_clip_max_1 = <1001000>;
+		freq_clip_max_2 = <845000>;
+		freq_clip_max_3 = <728000>;
+		freq_clip_max_4 = <450000>;
 		freq_clip_max_5 = <343000>;
 
 		cooling_level_0 = <91>;
@@ -825,11 +821,11 @@
 		/* gpu cooling related table */
 		gpu_idx_num = <6>;
 		/* flags, driver_data(index), frequency */
-		gpu_cooling_table = < 0 0 1246000
-				      0 1 1146000
-				      0 2 1001000
-				      0 3 1001000
-				      0 4 845000
+		gpu_cooling_table = < 0 0 1146000
+				      0 1 1001000
+				      0 2 845000
+				      0 3 728000
+				      0 4 545000
 				      0 5 TABLE_END>;
 	};
 
@@ -1621,7 +1617,7 @@
 				1 0 0 0 0 0 0 0 1
 				20 0 0 839000 0 546000 100000 0 1
 				50 0 0 1014000 0 836000 100000 0 1
-				100 0 0 1586000 0 902000 100000 0 1
+				100 0 0 1482000 0 902000 100000 0 1
 				>;
 		};
 		boot_device@2 {
@@ -1645,9 +1641,9 @@
 			net_boost,node="clat clat4 v4-rmnet0 v4-rmnet1 v4-rmnet2 v4-rmnet3 v4-rmnet4 v4-rmnet5 v4-rmnet6 v4-rmnet7";
 			net_boost,table_size = <3>;
 			net_boost,table= <
-				120 1482000 0 0 0 902000 0 0 0
-				130 1586000 0 0 0 902000 0 0 0
-				150 1690000 0 0 0 902000 0 0 0
+				120 1352000 0 0 0 902000 0 0 0
+				130 1482000 0 0 0 902000 0 0 0
+				150 1586000 0 0 0 902000 0 0 0
 				>;
 		};
 		boot_device@5 {

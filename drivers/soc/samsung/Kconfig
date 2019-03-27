@@ -52,7 +52,12 @@ config SCHED_AVG_NR_RUNNING
 config EXYNOS_HOTPLUG_GOVERNOR
 	bool "Enable Exynos dynamic hotplug governor"
 	select SCHED_AVG_NR_RUNNING
-
+config THUNDERPLUG_CONTROL
+	bool "Enable plugging down/up of cores based on load per core"
+	depends on SMP && HOTPLUG_CPU
+	default n
+	help
+	  This driver hotplugs cpu cores based on per-core load	
 config EXYNOS_MCINFO
 	bool "Exynos memory controller information"
 	default n

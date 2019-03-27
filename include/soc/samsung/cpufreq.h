@@ -155,7 +155,7 @@ extern int exynos_cpufreq_regulator_register_notifier(cluster_type cluster);
 #else
 #define COLD_VOLT_OFFSET	37500
 #endif
-#define LIMIT_COLD_VOLTAGE	1200000
+#define LIMIT_COLD_VOLTAGE	1300000
 #define MIN_COLD_VOLTAGE	400000
 #define NR_CLUST0_CPUS		4
 #define NR_CLUST1_CPUS		4

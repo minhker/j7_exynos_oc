@@ -12,19 +12,19 @@
 /dts-v1/;
 #include "exynos7870-j7y17lte_common.dtsi"
 #include "modem-ss315ap-pdata.dtsi"
-#include "exynos7870-j7y17lte_eur_open_gpio_01.dtsi"
+#include "exynos7870-j7y17lte_eur_open_gpio_03.dtsi"
 #include "exynos7870-j7y17lte_eur_open_battery_00.dtsi"
 #include "exynos7870-j7y17lte_fingerprint-sensor_00.dtsi"
 #include "exynos7870-j5y17lte_mst_00.dtsi"
 
 / {
-	model = "Samsung J7Y17 LTE OPEN rev02 board based on Exynos7870";
+	model = "Samsung J7Y17 LTE OPEN rev03 board based on Exynos7870";
         model_info-chip = <7870>;
         model_info-platform = "android";
         model_info-subtype = "samsung";
-        model_info-hw_rev = <2>;
-        model_info-hw_rev_end = <2>;
-	compatible = "samsung, J7Y17 LTE EUR OPEN 02", "samsung,exynos7870";
+        model_info-hw_rev = <3>;
+        model_info-hw_rev_end = <3>;
+	compatible = "samsung, J7Y17 LTE EUR OPEN 03", "samsung,exynos7870";
 
 	i2c@13870000 {
 		status = "okay";
@@ -311,16 +311,16 @@
 
 				ldo29_reg: LDO29 {
 					regulator-name = "LCD_3P0";
-					regulator-min-microvolt = <2800000>; //30
-					regulator-max-microvolt = <2800000>;  //30
+					regulator-min-microvolt = <3000000>;
+					regulator-max-microvolt = <3000000>;
 					regulator-boot-on;
 					regulator-initial-mode = <3>;
 				};
 
 				ldo30_reg: LDO30 {
 					regulator-name = "LCD_1P8";
-					regulator-min-microvolt = <1600000>;  //18
-					regulator-max-microvolt = <1600000>;//18
+					regulator-min-microvolt = <1800000>;
+					regulator-max-microvolt = <1800000>;
 					regulator-boot-on;
 					regulator-initial-mode = <3>;
 				};
@@ -337,23 +337,23 @@
 
 				ldo32_reg: LDO32 {
 					regulator-name = "VDD_MOTOR_3.3";
-					regulator-min-microvolt = <3200000>; //33
-					regulator-max-microvolt = <3200000>; //33
+					regulator-min-microvolt = <3300000>;
+					regulator-max-microvolt = <3300000>;
 					regulator-ramp-delay = <12000>;
 				};
 
 				ldo33_reg: LDO33 {
 					regulator-name = "vdd_sensor_3p3";
-					regulator-min-microvolt = <3200000>; //33
-					regulator-max-microvolt = <3200000>; //33
+					regulator-min-microvolt = <3300000>;
+					regulator-max-microvolt = <3300000>;
 					regulator-ramp-delay = <12000>;
 					regulator-initial-mode = <3>;
 				};
 
 				ldo34_reg: LDO34 {
 					regulator-name = "tsp_avdd";
-					regulator-min-microvolt = <3000000>; //3300000
-					regulator-max-microvolt = <3000000>; //3300000
+					regulator-min-microvolt = <3300000>;
+					regulator-max-microvolt = <3300000>;
 				};
 
 				ldo35_reg: LDO35 {
@@ -569,7 +569,7 @@
 	i2c@20{
 		mip4_tk@49{
 		 	mip4_tk,firmware-name = "melfas_tk/mhs2041_j7y17.fw";
+			mip4_tk,grip_ch = <0>;		 	
 		};
-	};	
-	
+	};			
 };

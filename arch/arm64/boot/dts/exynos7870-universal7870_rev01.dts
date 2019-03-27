@@ -474,8 +474,8 @@
 
 				buck2_reg: BUCK2 {
 					regulator-name = "BUCK2";
-					regulator-min-microvolt = <400000>;
-					regulator-max-microvolt = <1300000>;
+					regulator-min-microvolt = <100000>;
+					regulator-max-microvolt = <800000>;
 					regulator-always-on;
 					regulator-boot-on;
 					regulator-ramp-delay = <12000>;
@@ -668,7 +668,7 @@
 				ldo31_reg: LDO31 {
 					regulator-name = "vdd_ldo31";
 					regulator-min-microvolt = <1800000>;
-					regulator-max-microvolt = <3375000>;
+					regulator-max-microvolt = <2800000>;
 					regulator-boot-on;
 					regulator-always-on;
 					regulator-ramp-delay = <12000>;
@@ -677,7 +677,7 @@
 
 				ldo32_reg: LDO32 {
 					regulator-name = "tsp_dvdd";
-					regulator-min-microvolt = <3300000>;
+					regulator-min-microvolt = <1800000>;
 					regulator-max-microvolt = <3300000>;
 					regulator-always-on;
 					regulator-ramp-delay = <12000>;
@@ -703,7 +703,7 @@
 
 				ldo35_reg: LDO35 {
 					regulator-name = "VDD_CAM_SENSOR_A2P95";
-					regulator-min-microvolt = <2950000>;
+					regulator-min-microvolt = <1800000>;
 					regulator-max-microvolt = <2950000>;
 					regulator-always-on;
 					regulator-ramp-delay = <12000>;
@@ -851,7 +851,7 @@
 		battery,full_check_current_2nd = <3000 0 0 3000 3000 3000 3000 3000 3000 0 3000 3000 0 0 0 3000 3000 3000 3000 3000 3000 0 3000 3000 3000 3000>;
 		battery,input_current_limit_new = <1800 0 0 1500 460 900 1000 460 1000 0 820 1900 1000 0 0 400 700 1300 300 1000 1500 0 1667 1000 80 1800>;
 		battery,fast_charging_current_new = <2100 0 0 1700 460 1200 1000 460 1200 0 1000 1600 1000 0 0 400 700 1300 300 1000 1500 0 3150 1000 80 1800>;
-		battery,recharge_condition_vcell = <4270>;  //4250
+		battery,recharge_condition_vcell = <4310>;  //4250
 	};
 
 
@@ -898,9 +898,9 @@
 		non_hw_trigger_levels = <7>;
 
 		/* Throttling Level */
-		trigger_levels_0 = <91>;
-		trigger_levels_1 = <91>;
-		trigger_levels_2 = <96>;
+		trigger_levels_0 = <96>;
+		trigger_levels_1 = <96>;
+		trigger_levels_2 = <101>;
 		trigger_levels_3 = <101>;
 		trigger_levels_4 = <106>;
 		trigger_levels_5 = <111>;
@@ -925,19 +925,23 @@
 		trigger_type_6 = <THROTTLE_ACTIVE>;
 		trigger_type_7 = <HW_TRIP>;
 
-		freq_tab_count = <5>;
+		freq_tab_count = <6>;
 
 		freq_clip_max_0 = <1794000>;
-		freq_clip_max_1 = <1482000>;
-		freq_clip_max_2 = <1248000>;
-		freq_clip_max_3 = <546000>;
-		freq_clip_max_4 = <343000>;
+		freq_clip_max_1 = <1690000>;
+		freq_clip_max_2 = <1586000>;
+		freq_clip_max_3 = <1248000>;
+		freq_clip_max_4 = <902000>;
+		freq_clip_max_5 = <343000>;
 
-		cooling_level_0 = <91>;
+		cooling_level_0 = <96>;
 		cooling_level_1 = <96>;
 		cooling_level_2 = <101>;
-		cooling_level_3 = <111>;
-		cooling_level_4 = <120>;
+		cooling_level_3 = <101>;
+		cooling_level_4 = <106>;
+		cooling_level_5 = <111>;
+		cooling_level_6 = <115>;
+		cooling_level_7 = <120>;
 	};
 
 	tmuctrl_1: tmuctrl_CPUCL1@10130000 {
@@ -948,9 +952,9 @@
 		non_hw_trigger_levels = <7>;
 
 		/* Throttling Level */
-		trigger_levels_0 = <91>;
-		trigger_levels_1 = <91>;
-		trigger_levels_2 = <96>;
+		trigger_levels_0 = <96>;
+		trigger_levels_1 = <96>;
+		trigger_levels_2 = <101>;
 		trigger_levels_3 = <101>;
 		trigger_levels_4 = <106>;
 		trigger_levels_5 = <111>;
@@ -975,19 +979,23 @@
 		trigger_type_6 = <THROTTLE_ACTIVE>;
 		trigger_type_7 = <HW_TRIP>;
 
-		freq_tab_count = <5>;
+		freq_tab_count = <6>;
 
 		freq_clip_max_0 = <1794000>;
-		freq_clip_max_1 = <1482000>;
-		freq_clip_max_2 = <1248000>;
-		freq_clip_max_3 = <546000>;
-		freq_clip_max_4 = <343000>;
+		freq_clip_max_1 = <1690000>;
+		freq_clip_max_2 = <1586000>;
+		freq_clip_max_3 = <1248000>;
+		freq_clip_max_4 = <902000>;
+		freq_clip_max_5 = <343000>;
 
-		cooling_level_0 = <91>;
+		cooling_level_0 = <96>;
 		cooling_level_1 = <96>;
 		cooling_level_2 = <101>;
-		cooling_level_3 = <111>;
-		cooling_level_4 = <120>;
+		cooling_level_3 = <101>;
+		cooling_level_4 = <106>;
+		cooling_level_5 = <111>;
+		cooling_level_6 = <115>;
+		cooling_level_7 = <120>;
 
 		hotplug_enable = <1>;
 		hotplug_in_threshold = <91>;
@@ -1031,10 +1039,10 @@
 
 		freq_tab_count = <6>;
 
-		freq_clip_max_0 = <1146000>;
-		freq_clip_max_1 = <1001000>;
-		freq_clip_max_2 = <845000>;
-		freq_clip_max_3 = <728000>;
+		freq_clip_max_0 = <1246000>;
+		freq_clip_max_1 = <1146000>;
+		freq_clip_max_2 = <1001000>;
+		freq_clip_max_3 = <845000>;
 		freq_clip_max_4 = <545000>;
 		freq_clip_max_5 = <343000>;
 
@@ -1048,11 +1056,11 @@
 		/* gpu cooling related table */
 		gpu_idx_num = <6>;
 		/* flags, driver_data(index), frequency */
-		gpu_cooling_table = < 0 0 1146000
+		gpu_cooling_table = < 0 0 1246000
 				      0 1 1146000
-				      0 2 1146000
-				      0 3 1146000
-				      0 4 1146000
+				      0 2 1001000
+				      0 3 845000
+				      0 4 545000
 				      0 5 TABLE_END>;
 	};
 
@@ -1085,7 +1093,7 @@
 		mif,mif_clk_table = <
 			/* khz */
 			902000
-			825000
+			836000
 			728000
 			676000
 			546000
@@ -1610,3 +1618,4 @@
 		status = "okay";
 	};
 };
+

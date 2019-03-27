@@ -357,10 +357,10 @@ static void asv_set_freq_limit(void)
 notfused:
 
 #ifdef PWRCAL_TARGET_LINUX
-	asv_dvfs_cpucl0->table->max_freq = 1794000;
-	asv_dvfs_cpucl1->table->max_freq = 1794000;
-	asv_dvfs_g3d->table->max_freq = 1300000;
-	asv_dvfs_mif->table->max_freq = 902000;
+	//asv_dvfs_cpucl0->table->max_freq = 1794000;
+	//asv_dvfs_cpucl1->table->max_freq = 1924000;
+	//asv_dvfs_g3d->table->max_freq = 1300000;
+	//asv_dvfs_mif->table->max_freq = 902000;
 #endif
 	return;
 }
@@ -630,18 +630,21 @@ static int dvfscpucl0_get_asv_table(unsigned int *table)
 
 	max_lv = asv_dvfs_cpucl0->table->num_of_lv;
 
-	for (lv = 0; lv < max_lv; lv++)
+	for (lv = 0; lv < max_lv; lv++)   // lv2-lv16 safe dorp 50000
 	{
-		table[lv] = get_asv_voltage(cal_asv_dvfs_cpucl0, lv);
-		if (lv == 1)
-			table[1] = 1300000;
-		if (lv == 2)
-			table[2] = 1168750;
-		if (lv == 15)
-			table[15] = 600000;
-		if (lv == 16)
-			table[16] = 575000;
-		
+		if(lv<=3)
+			{
+			table[0] = 1300000;//130
+			table[1] = 1225000;//130
+			table[2] = 1112500;//1131250
+			table[3] = 1043750;
+			}
+		else if(lv<=9)
+			table[lv] = (get_asv_voltage(cal_asv_dvfs_cpucl0, lv))-12500;
+		else if(lv<=13)
+			table[lv] = (get_asv_voltage(cal_asv_dvfs_cpucl0, lv))-6250;	
+		else 
+			table[lv] = (get_asv_voltage(cal_asv_dvfs_cpucl0, lv))+12500;		
 	}
 
 	return max_lv;
@@ -653,18 +656,21 @@ static int dvfscpucl1_get_asv_table(unsigned int *table)
 
 	max_lv = asv_dvfs_cpucl1->table->num_of_lv;
 
-	for (lv = 0; lv < max_lv; lv++)
+	for (lv = 0; lv < max_lv; lv++)   // lv2-lv16 safe to dorp 50000
 	{
-		table[lv] = get_asv_voltage(cal_asv_dvfs_cpucl1, lv);
-		if (lv == 1)
-			table[1] = 1300000;
-		if (lv == 2)
-			table[2] = 1168750;
-		if (lv == 15)
-			table[15] = 600000;
-		if (lv == 16)
-			table[16] = 575000;
-		
+		if(lv<=3)
+			{
+			table[0] = 1300000;//130
+			table[1] = 1225000;//130
+			table[2] = 1112500;//1131250
+			table[3] = 1043750;
+			}
+		else if(lv<=9)
+			table[lv] = (get_asv_voltage(cal_asv_dvfs_cpucl1, lv))-12500;
+		else if(lv<=13)
+			table[lv] = (get_asv_voltage(cal_asv_dvfs_cpucl1, lv))-6250;	
+		else 
+			table[lv] = (get_asv_voltage(cal_asv_dvfs_cpucl1, lv))+12500;	
 	}
 
 	return max_lv;
@@ -678,7 +684,7 @@ static int dfscpu_set_ema(unsigned int volt)
 		ema_temp = (asv_tbl_info.cpu_cl_ema << 3) | (asv_tbl_info.cpu_cl_emaw << 1) | asv_tbl_info.cpu_cl_emas;
 		cpu_ema = (ema_temp << 12) | (ema_temp << 6) | ema_temp;
 		if (cpu_ema == 0)
-			cpu_ema = 0x1B6D2;
+			cpu_ema = 0x1B6D2;//0x1B6D2
 		pwrcal_writel(CPUCL0_EMA_CON, cpu_ema);
 		pwrcal_writel(CPUCL1_EMA_CON, cpu_ema);
 		}
@@ -697,19 +703,23 @@ static int dvfsg3d_get_asv_table(unsigned int *table)
 	max_lv = asv_dvfs_g3d->table->num_of_lv;
 
 	for (lv = 0; lv < max_lv; lv++) { 
-		table[lv] = get_asv_voltage(cal_asv_dvfs_g3d, lv);
+		if(lv<6){
+			table[lv] = (get_asv_voltage(cal_asv_dvfs_g3d, lv))-6250;
+			}
+		else
+			table[lv] = get_asv_voltage(cal_asv_dvfs_g3d, lv);
 		if (lv == 0) { 
-			table[0] = 1300000;
+			table[0] = 1212500;
 		}
 		if (lv == 1) { 
-			table[1] = 1125000;
+			table[1] = 1125000;  //1125
 		}
-		if (lv == 8) { 
-			table[8] = 600000;
-		}
-		if (lv == 9) { 
-			table[9] = 575000;
-		}
+	//	if (lv == 8) { 
+	//		table[8] = 600000;
+	//	}
+	//	if (lv == 9) { 
+	//		table[9] = 575000;
+	//	}
 	}
 	return max_lv;
 }
@@ -745,20 +755,15 @@ static int dfsg3d_set_ema(unsigned int volt)
 
 static int dvfsmif_get_asv_table(unsigned int *table)
 {
-	int lv, max_lv;
+	int lv, max_lv,vol=43750,temp=0;
 
 	max_lv = asv_dvfs_mif->table->num_of_lv;
 
 	for (lv = 0; lv < max_lv; lv++)
 		{
-		//table[lv] = get_asv_voltage(cal_asv_dvfs_mif, lv);
-			table[lv]= 606250;
-	//		table[0] = 600000;
-	//		table[1] = 600000;
-	//		table[2] = 600000;
-	//		table[3] = 600000;
-	//		table[4] = 600000;
-	//		table[5] = 600000;
+		//table[lv] =( get_asv_voltage(cal_asv_dvfs_mif, lv))-6250*count;
+		table[lv] =vol-=6250;
+		//	count+=2;
 
 	}
 	return max_lv;
@@ -766,18 +771,13 @@ static int dvfsmif_get_asv_table(unsigned int *table)
 
 static int dvfsint_get_asv_table(unsigned int *table)
 {
-	int lv, max_lv;
+	int lv, max_lv,vol=31250,temp=0;
 
 	max_lv = asv_dvfs_int->table->num_of_lv;
 
 	for (lv = 0; lv < max_lv; lv++){ 
-		//	table[lv] = get_asv_voltage(cal_asv_dvfs_int, lv);
-			table[lv]= 606250;
-	//		table[0] = 600000;
-	//		table[1] = 600000;
-	//		table[2] = 600000;
-	//		table[3] = 600000;
-
+			//table[lv] =( get_asv_voltage(cal_asv_dvfs_int, lv))-6250*count;
+			table[lv] =vol-=6250;
 	}
 	return max_lv;
 }
@@ -789,22 +789,21 @@ static int dvfsdisp_get_asv_table(unsigned int *table)
 	max_lv = asv_dvfs_disp->table->num_of_lv;
 
 	for (lv = 0; lv < max_lv; lv++)
-		table[lv] = get_asv_voltage(cal_asv_dvfs_disp, lv);
+		table[lv] = get_asv_voltage(cal_asv_dvfs_disp, lv)-25000;  //-25
 
 	return max_lv;
 }
 
 static int dvfscam_get_asv_table(unsigned int *table)
 {
-	int lv, max_lv;
+	int lv, max_lv,vol=6250,count=5;
 
 	max_lv = asv_dvfs_cam->table->num_of_lv;
 
 	for (lv = 0; lv < max_lv; lv++)
-		table[lv] = get_asv_voltage(cal_asv_dvfs_cam, lv);
-		table[0]=600000;
-		table[1]=500000;
-		table[2]=400000;
+		table[0] =737500;
+		table[1] =637500;
+		table[2] =437500;
 	return max_lv;
 }
 

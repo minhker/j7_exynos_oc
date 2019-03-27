@@ -426,7 +426,7 @@
 		/* CL1 */
 		cl1_idx_num = <17>;
 		cl1_max_support_idx = <2>; //1 overheating
-		cl1_min_support_idx = <16>;
+		cl1_min_support_idx = <10>;
 		cl1_boot_max_qos = <1794000>;
 		cl1_boot_min_qos = <1794000>;
 		cl1_boot_lock_time = <40000000>;
@@ -491,13 +491,14 @@
 		clock-names = "dvfs_mif", "dvfs_mif_sw";
 		devfreq_type = "mif";
 		devfreq_domain_name = "dvfs_mif";
-		opp_list_length = <6>;
+		opp_list_length = <7>;
 		opp_list = < 0 902000 900000
 			     1 836000 900000
 			     2 728000 900000
 			     3 676000 900000
 			     4 546000 900000
-			     5 451000 900000>;
+			     5 451000 900000
+			     6 275000 900000>;
 
 		/* initial_freq, default_qos, suspend_freq, cal_qos_max, min_freq, max_freq */
 		freq_info = <902000 451000 451000 902000 451000 902000>;

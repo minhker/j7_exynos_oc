@@ -113,10 +113,11 @@ static int gpu_tmu_notifier(struct notifier_block *notifier,
 
 	return NOTIFY_OK;
 }
-
+#ifdef CONFIG_GPU_THERMAL
 static struct notifier_block gpu_tmu_nb = {
 	.notifier_call = gpu_tmu_notifier,
 };
+#endif
 #endif /* CONFIG_EXYNOS_THERMAL */
 
 static int gpu_power_on(struct kbase_device *kbdev)
@@ -346,7 +347,9 @@ int gpu_notifier_init(struct kbase_device *kbdev)
 
 	platform->voltage_margin = 0;
 #ifdef CONFIG_EXYNOS_THERMAL
+#ifdef CONFIG_GPU_THERMAL
 	exynos_gpu_add_notifier(&gpu_tmu_nb);
+#endif
 #endif /* CONFIG_EXYNOS_THERMAL */
 
 #ifdef CONFIG_MALI_RT_PM

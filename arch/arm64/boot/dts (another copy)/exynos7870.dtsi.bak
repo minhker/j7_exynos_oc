@@ -415,20 +415,20 @@
 		/* For CPUFREQ table */
 		/* CL0 */
 		cl0_idx_num = <17>;
-		cl0_max_support_idx = <2>;  //1 overheating
+		cl0_max_support_idx = <2>;
 		cl0_min_support_idx = <16>;
-		cl0_boot_max_qos = <1794000>;
-		cl0_boot_min_qos = <1794000>;
+		cl0_boot_max_qos = <1690000>;
+		cl0_boot_min_qos = <1690000>;
 		cl0_boot_lock_time = <40000000>;
 		cl0_en_ema = <1>;
 		cl0_regulator = "BUCK1";
 
 		/* CL1 */
 		cl1_idx_num = <17>;
-		cl1_max_support_idx = <2>; //1 overheating
+		cl1_max_support_idx = <2>;
 		cl1_min_support_idx = <16>;
-		cl1_boot_max_qos = <1794000>;
-		cl1_boot_min_qos = <1794000>;
+		cl1_boot_max_qos = <1690000>;
+		cl1_boot_min_qos = <1690000>;
 		cl1_boot_lock_time = <40000000>;
 		cl1_en_ema = <1>;
 		cl1_regulator = "BUCK1";
@@ -451,8 +451,8 @@
 				  12   757000  800000	450000
 				  13   676000  800000	450000
 				  14   546000  800000	450000
-				  15   449000  800000	0
-				  16   343000  800000	0 >;
+				  15   449000  800000	450000
+				  16   343000  800000	450000 >;
 
 		/* CL1 table ->	 idx  freq    volt   bus_lock */
 		cl1_dvfs_domain_name = "dvfs_cpucl1";
@@ -471,8 +471,8 @@
 				  12   757000  800000	450000
 				  13   676000  800000	450000
 				  14   546000  800000	450000
-				  15   449000  800000	0
-				  16   343000  800000	0 >;
+				  15   449000  800000	450000
+				  16   343000  800000	450000 >;
 	};
 
 	smc_info: mcinfo@10400000 {
@@ -491,13 +491,14 @@
 		clock-names = "dvfs_mif", "dvfs_mif_sw";
 		devfreq_type = "mif";
 		devfreq_domain_name = "dvfs_mif";
-		opp_list_length = <6>;
+		opp_list_length = <7>;
 		opp_list = < 0 902000 900000
-			     1 836000 900000
+			     1 825000 900000
 			     2 728000 900000
 			     3 676000 900000
 			     4 546000 900000
-			     5 451000 900000>;
+			     5 451000 900000
+			     6 275000 900000>;
 
 		/* initial_freq, default_qos, suspend_freq, cal_qos_max, min_freq, max_freq */
 		freq_info = <902000 451000 451000 902000 451000 902000>;
@@ -520,7 +521,7 @@
 		use_reg_dummy = "false";
 		reg_name = "BUCK2";
 		/* cold, cold_limit, min_cold, max_uV */
-		volt_info = <25000 668750  0 1000000>;
+		volt_info = <25000 1250000 0 1250000>;
 
 		use_tmu = "false";
 		use_cl_dvfs = "false";
@@ -562,9 +563,9 @@
 		use_reg_dummy = "false";
 		reg_name = "BUCK2";
 		/* <cold, cold_limit, min_cold, max_uV> */
-		volt_info = <25000 668750  0 1000000>;
+		volt_info = <25000 1250000 0 1250000>;
 
-		use_tmu = "false";
+		use_tmu = "true";
 		use_cl_dvfs = "false";
 		use_sw_clk = "false";
 	};
@@ -602,7 +603,7 @@
 		use_reg_dummy = "false";
 		reg_name = "BUCK2";
 		/* cold, cold_limit, min_cold, max_uV */
-		volt_info = <25000 668750  0 1000000>;
+		volt_info = <25000 1250000 0 1250000>;
 
 		use_tmu = "true";
 		use_cl_dvfs = "false";
@@ -622,10 +623,10 @@
 			    2 167000 700000>;
 
 		/* <initial, default_qos, suspend_freq, cal_qos_max, min, max> */
-		freq_info = <533000 167000 167000 533000 167000 533000>;
+		freq_info = <533000 167000 533000 533000 167000 533000>;
 
 		/* PM QoS */
-		boot_qos_timeout = <40>;
+		boot_qos_timeout = <0>;
 
 		/* default dev profile */
 		use_get_dev = "false";
@@ -642,7 +643,7 @@
 		use_reg_dummy = "true";
 		reg_name = "BUCK2";
 		/* cold, cold_limit, min_cold, max_uV */
-		volt_info = <25000 668750  0 1000000>;
+		volt_info = <25000 1250000 0 1250000>;
 
 		use_tmu = "true";
 		use_cl_dvfs = "false";
@@ -1927,9 +1928,9 @@
 
 			/* Frequency table */
 			/* for level	:	1_Head, 2_Head, 2_Tail */
-			input_booster,cpu_freqs = <1248000 1144000 1014000>;
+			input_booster,cpu_freqs = <1248000 1248000 1014000>;
 			input_booster,hmp_boost = <1 1 0>;
-			input_booster,kfc_freqs = <1248000 1144000 1014000>;
+			input_booster,kfc_freqs = <1248000 1248000 1014000>;
 			input_booster,mif_freqs = <0 0 0>;
 			input_booster,int_freqs = <0 0 0>;
 
@@ -1942,20 +1943,20 @@
 			input_booster,label = "MULTITOUCH";
 			input_booster,type = <3>;	/* BOOSTER_DEVICE_MULTITOUCH */
 
-			input_booster,levels = <1 2 3>;
+			input_booster,levels = <1 2>;
 
 			/* Frequency table */
 			/* for level	:	1_Head 2_Tail*/
-			input_booster,cpu_freqs = <1482000 1248000 1014000>;
-			input_booster,hmp_boost = <1 1 0>;
-			input_booster,kfc_freqs = <1482000 1248000 1014000>;
-			input_booster,mif_freqs = <0 0 0>;
-			input_booster,int_freqs = <0 0 0>;
+			input_booster,cpu_freqs = <1482000 1014000>;
+			input_booster,hmp_boost = <1 1>;
+			input_booster,kfc_freqs = <1482000 1014000>;
+			input_booster,mif_freqs = <0 0>;
+			input_booster,int_freqs = <0 0>;
 
 			/* Time table */
-			input_booster,head_times = <1000 500 0>;
-			input_booster,tail_times = <0 250 500>;
-			input_booster,phase_times = <0 0 0>;
+			input_booster,head_times = <1000 0>;
+			input_booster,tail_times = <0 500>;
+			input_booster,phase_times = <0 0>;
 		};
 		booster_key@5 {
 			input_booster,label = "KEYBOARD";
@@ -1965,9 +1966,9 @@
 
 			/* Frequency table */
 			/* for level	:	1_Head 2_Tail*/
-			input_booster,cpu_freqs = <1248000 1144000>;
+			input_booster,cpu_freqs = <1248000 1248000>;
 			input_booster,hmp_boost = <1 1>;
-			input_booster,kfc_freqs = <1248000 1144000>;
+			input_booster,kfc_freqs = <1248000 1248000>;
 			input_booster,mif_freqs = <0 0>;
 			input_booster,int_freqs = <0 0>;
 
@@ -1984,9 +1985,9 @@
 
 			/* Frequency table */
 			/* for level	:	1_Head 2_Tail*/
-			input_booster,cpu_freqs = <1144000 1014000>;
+			input_booster,cpu_freqs = <1248000 1014000>;
 			input_booster,hmp_boost = <1 0>;
-			input_booster,kfc_freqs = <1144000 1014000>;
+			input_booster,kfc_freqs = <1248000 1014000>;
 			input_booster,mif_freqs = <0 0>;
 			input_booster,int_freqs = <0 0>;
 
@@ -2003,9 +2004,9 @@
 
 			/* Frequency table */
 			/* for level	:	1_Head 2_Tail*/
-			input_booster,cpu_freqs = <1144000 0>;
+			input_booster,cpu_freqs = <1248000 0>;
 			input_booster,hmp_boost = <1 0>;
-			input_booster,kfc_freqs = <1144000 0>;
+			input_booster,kfc_freqs = <1248000 0>;
 			input_booster,mif_freqs = <0 0>;
 			input_booster,int_freqs = <0 0>;
 
@@ -2022,9 +2023,9 @@
 
 			/* Frequency table */
 			/* for level	:	1_Head 2_Tail*/
-			input_booster,cpu_freqs = <1144000 1014000>;
+			input_booster,cpu_freqs = <1248000 1014000>;
 			input_booster,hmp_boost = <1 0>;
-			input_booster,kfc_freqs = <1144000 1014000>;
+			input_booster,kfc_freqs = <1248000 1014000>;
 			input_booster,mif_freqs = <0 0>;
 			input_booster,int_freqs = <0 0>;
 
@@ -2040,4 +2041,3 @@
 		compatible = "samsung,exynos-fips-fmp";
 	};
 };
-

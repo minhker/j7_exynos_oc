@@ -12,19 +12,19 @@
 /dts-v1/;
 #include "exynos7870-j7y17lte_common.dtsi"
 #include "modem-ss315ap-pdata.dtsi"
-#include "exynos7870-j7y17lte_eur_open_gpio_01.dtsi"
+#include "exynos7870-j7y17lte_eur_open_gpio_04.dtsi"
 #include "exynos7870-j7y17lte_eur_open_battery_00.dtsi"
 #include "exynos7870-j7y17lte_fingerprint-sensor_00.dtsi"
 #include "exynos7870-j5y17lte_mst_00.dtsi"
 
 / {
-	model = "Samsung J7Y17 LTE OPEN rev02 board based on Exynos7870";
+	model = "Samsung J7Y17 LTE OPEN rev05 board based on Exynos7870";
         model_info-chip = <7870>;
         model_info-platform = "android";
         model_info-subtype = "samsung";
-        model_info-hw_rev = <2>;
-        model_info-hw_rev_end = <2>;
-	compatible = "samsung, J7Y17 LTE EUR OPEN 02", "samsung,exynos7870";
+        model_info-hw_rev = <5>;
+        model_info-hw_rev_end = <5>;
+	compatible = "samsung, J7Y17 LTE EUR OPEN 05", "samsung,exynos7870";
 
 	i2c@13870000 {
 		status = "okay";
@@ -48,7 +48,7 @@
 				movie_current = <175>; /*unused*/
 				torch_current = <75>;
 				factory_current = <300>;
-				front_torch_current = <50>;
+				front_torch_current = <100>;
 
 				status = "okay";
 				s2mu005-leds1 {
@@ -311,16 +311,16 @@
 
 				ldo29_reg: LDO29 {
 					regulator-name = "LCD_3P0";
-					regulator-min-microvolt = <2800000>; //30
-					regulator-max-microvolt = <2800000>;  //30
+					regulator-min-microvolt = <3000000>;
+					regulator-max-microvolt = <3000000>;
 					regulator-boot-on;
 					regulator-initial-mode = <3>;
 				};
 
 				ldo30_reg: LDO30 {
 					regulator-name = "LCD_1P8";
-					regulator-min-microvolt = <1600000>;  //18
-					regulator-max-microvolt = <1600000>;//18
+					regulator-min-microvolt = <1800000>;
+					regulator-max-microvolt = <1800000>;
 					regulator-boot-on;
 					regulator-initial-mode = <3>;
 				};
@@ -337,23 +337,23 @@
 
 				ldo32_reg: LDO32 {
 					regulator-name = "VDD_MOTOR_3.3";
-					regulator-min-microvolt = <3200000>; //33
-					regulator-max-microvolt = <3200000>; //33
+					regulator-min-microvolt = <3300000>;
+					regulator-max-microvolt = <3300000>;
 					regulator-ramp-delay = <12000>;
 				};
 
 				ldo33_reg: LDO33 {
 					regulator-name = "vdd_sensor_3p3";
-					regulator-min-microvolt = <3200000>; //33
-					regulator-max-microvolt = <3200000>; //33
+					regulator-min-microvolt = <3300000>;
+					regulator-max-microvolt = <3300000>;
 					regulator-ramp-delay = <12000>;
 					regulator-initial-mode = <3>;
 				};
 
 				ldo34_reg: LDO34 {
 					regulator-name = "tsp_avdd";
-					regulator-min-microvolt = <3000000>; //3300000
-					regulator-max-microvolt = <3000000>; //3300000
+					regulator-min-microvolt = <3300000>;
+					regulator-max-microvolt = <3300000>;
 				};
 
 				ldo35_reg: LDO35 {
@@ -383,11 +383,11 @@
 			io-channel-names = "adc-jack";
 			#io-channel-cells = <1>;
 			io-channel-ranges;
-			but-zones-list = <&but_zones 226 0 258>, /* send/end */
-					<&but_zones 582 259 332>, /* google */
-					<&but_zones 115 333 539>, /* vol up */
-					<&but_zones 114 540 1000>; /* vol down */
-			mic-adc-range = <1370>;
+			but-zones-list = <&but_zones 226 0 275>, /* send/end */
+					<&but_zones 582 276 356>, /* google */
+					<&but_zones 115 357 562>, /* vol up */
+					<&but_zones 114 563 1000>; /* vol down */
+			mic-adc-range = <1390>;
 			mic-det-delay = <550>;
 		};
 	};
@@ -422,31 +422,6 @@
 		status = "okay";
 	};
 
-	hsi2c_2: hsi2c@13960000 {
-		/delete-property/ front_eeprom@51;
-	};
-
-	hsi2c_3: hsi2c@138A0000 {
-		fimc-is-imx258@1A {
-			fnum = <2>; /* F1_9 : fimc-is-param.h */
-		};
-	};
-
-	i2c_6: i2c@138E0000 {
-		gpios = <&gpc5 0 0 &gpc5 1 0>;
-		status = "okay";
-		samsung,i2c-sda-delay = <100>;
-		samsung,i2c-max-bus-freq = <400000>;
-
-		pinctrl-names = "default";
-		pinctrl-0 = <&i2c6_bus>;
-
-		front_eeprom@51 {
-			compatible = "samsung,front-eeprom-i2c";
-			reg = <0x51>;
-		};
-	};
-
 	pinctrl@139F0000 {
 		acc_int: acc_int {
 			samsung,pins = "gpa2-3";
@@ -467,7 +442,7 @@
 		/delete-node/ ese_pvdd_en;
 
 		sensor_i2c: sensor_i2c {
-			samsung,pins = "gpc4-3", "gpc4-2";
+			samsung,pins = "gpc1-2", "gpc1-3";
 			samsung,pin-function = <2>;
 			samsung,pin-pud = <0>;
 		};
@@ -501,7 +476,7 @@
 		pinctrl-0 = <&spk_amp_i2c>;
 	};
 
-	i2c@138D0000 {
+	i2c@13880000 {
 		samsung,i2c-sda-delay = <100>;
 		samsung,i2c-max-bus-freq = <400000>;
 		status = "okay";
@@ -517,7 +492,7 @@
 			pinctrl-0 = <&acc_int>;
 			interrupt-parent = <&gpa2>;
 			interrupts = <3 0 0>;
-			st,orientation = <1 2 1 0 1 1 1 1 2>;
+			st,orientation = <0 1 1 1 0 1 1 1 2>;
 			st,drdy-int-pin = <1>;
 			st,irq_gpio = <&gpa2 3 0x00>;
 		};
@@ -526,8 +501,8 @@
 			compatible = "yas_magnetometer";
 			reg = <0x2e>;
 			yas,orientation = <0>;
-			yas,softiron = <10000 0 0 0 10000 0 0 0 10000>;
-			yas,softiron_sign = <2 1 1 1 2 1 1 1 2>;
+			yas,softiron = <9724 1038 114 1038 9692 176 114 176 10588>;
+			yas,softiron_sign = <2 2 2 2 2 0 2 0 2>;
 		};
 	};
 
@@ -565,11 +540,10 @@
 			taos,cct_offset = <2095>;
 		};
 	};
-
+	
 	i2c@20{
 		mip4_tk@49{
-		 	mip4_tk,firmware-name = "melfas_tk/mhs2041_j7y17.fw";
+		 	mip4_tk,firmware-name = "melfas_tk/mhs2041B_j7y17.fw";
 		};
-	};	
-	
+	};
 };
