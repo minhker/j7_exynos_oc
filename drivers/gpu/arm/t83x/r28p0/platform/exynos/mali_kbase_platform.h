@@ -59,7 +59,6 @@ typedef enum {
 	GPU_L5,
 	GPU_L6,
 	GPU_L7,
-	GPU_L8,
 	GPU_MAX_LEVEL,
 } gpu_clock_level;
 
@@ -290,6 +289,9 @@ struct exynos_context {
 	bool dvs_is_enabled;
 
 	bool power_status;
+	int power_runtime_suspend_ret;
+	int power_runtime_resume_ret;
+
 	spinlock_t power_status_spinlock;
 
 	bool perf_gathering_status;

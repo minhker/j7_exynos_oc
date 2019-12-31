@@ -649,7 +649,10 @@ static u64 kbase_pm_l2_update_state(struct kbase_device *kbdev)
 
 	if (kbdev->pm.backend.invoke_poweroff_wait_wq_when_l2_off &&
 			backend->l2_state == KBASE_L2_OFF) {
-		KBASE_TRACE_ADD(kbdev, PM_GPU_OFF_QUEUE_WORK, NULL, NULL, 0u, 0u);
+
+		/* MALI_SEC_INTEGRATION */
+		KBASE_TRACE_ADD(kbdev, KBASE_DEVICE_PM_WAIT_WQ_QUEUE_WORK, NULL, NULL, 0u, 0u);
+
 		kbdev->pm.backend.invoke_poweroff_wait_wq_when_l2_off = false;
 		queue_work(kbdev->pm.backend.gpu_poweroff_wait_wq,
 				&kbdev->pm.backend.gpu_poweroff_wait_work);
@@ -1272,6 +1275,8 @@ void kbase_pm_clock_on(struct kbase_device *kbdev, bool is_resume)
 	lockdep_assert_held(&kbdev->js_data.runpool_mutex);
 	lockdep_assert_held(&kbdev->pm.lock);
 
+	/* MALI_SEC_INTEGRATION */
+	KBASE_TRACE_ADD(kbdev, PM_GPU_ON, NULL, NULL, 0u, kbdev->pm.backend.gpu_powered);
 	if (kbdev->pm.backend.gpu_powered) {
 		/* Already turned on */
 		if (kbdev->poweroff_pending)
@@ -1282,8 +1287,6 @@ void kbase_pm_clock_on(struct kbase_device *kbdev, bool is_resume)
 	}
 
 	kbdev->poweroff_pending = false;
-
-	KBASE_TRACE_ADD(kbdev, PM_GPU_ON, NULL, NULL, 0u, 0u);
 
 	if (is_resume && kbdev->pm.backend.callback_power_resume) {
 		kbdev->pm.backend.callback_power_resume(kbdev);

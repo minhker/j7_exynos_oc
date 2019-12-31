@@ -30,7 +30,6 @@
 #include "gpu_control.h"
 #ifdef CONFIG_CPU_THERMAL_IPA
 #include "gpu_ipa.h"
-#include <linux/ipa.h>
 #endif /* CONFIG_CPU_THERMAL_IPA */
 #include "gpu_custom_interface.h"
 

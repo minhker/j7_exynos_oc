@@ -1172,6 +1172,43 @@ static int set_interrupt(struct synaptics_rmi4_data *rmi4_data, bool set)
 	return 0;
 }
 
+static int wait_for_command_completion_ex(struct synaptics_rmi4_data *rmi4_data)
+{
+	int retval;
+	unsigned char value;
+	unsigned char timeout_count;
+	struct synaptics_rmi4_f54_handle *f54 = rmi4_data->f54;
+
+	timeout_count = 0;
+	do {
+		retval = rmi4_data->i2c_read(rmi4_data,
+				f54->command_base_addr,
+				&value,
+				sizeof(value));
+		if (retval < 0) {
+			input_err(true, &rmi4_data->i2c_client->dev,
+					"%s: Failed to read command register\n",
+					__func__);
+			return retval;
+		}
+
+		if (value == 0x00)
+			break;
+
+		msleep(100);
+		timeout_count++;
+	} while (timeout_count < (FORCE_TIMEOUT_100MS * 2));
+
+	if (timeout_count == (FORCE_TIMEOUT_100MS * 2)) {
+		input_err(true, &rmi4_data->i2c_client->dev,
+				"%s: Timed out waiting for command completion\n",
+				__func__);
+		return -ETIMEDOUT;
+	}
+
+	return 0;
+}
+
 static int wait_for_command_completion(struct synaptics_rmi4_data *rmi4_data)
 {
 	int retval;
@@ -4927,7 +4964,14 @@ static ssize_t synaptics_rmi4_f54_get_report_store(struct kobject *kobj,
 			ktime_set(WATCHDOG_TIMEOUT_S, 0),
 			HRTIMER_MODE_REL);
 #else
-	retval = wait_for_command_completion(rmi4_data);
+	/* 20180822 - wait extra time if it is F54_TRX_SHORT_TDDI */
+	if (F54_TRX_SHORT_TDDI == f54->report_type) {
+		retval = wait_for_command_completion_ex(rmi4_data);
+	}
+	else {
+		retval = wait_for_command_completion(rmi4_data);
+	}
+
 	if (retval < 0) {
 		input_err(true, &rmi4_data->i2c_client->dev,
 				"%s: error wait_for_command_completion\n",

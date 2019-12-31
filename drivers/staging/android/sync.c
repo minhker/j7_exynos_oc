@@ -446,7 +446,7 @@ int sync_fence_wait(struct sync_fence *fence, long timeout)
 			pr_info("fence timeout on [%pK] after %dms\n", fence,
 				jiffies_to_msecs(timeout));
 #else
-			pr_info("fence timeout on [%p] after %dms\n", fence,
+			pr_info("fence timeout on [%pK] after %dms\n", fence,
 				jiffies_to_msecs(timeout));
 #endif
 #ifdef CONFIG_MALI_SEC_JOB_STATUS_CHECK
@@ -534,6 +534,13 @@ static bool android_fence_enable_signaling(struct fence *fence)
 	return true;
 }
 
+static void android_fence_disable_signaling(struct fence *fence)
+{
+	struct sync_pt *pt = container_of(fence, struct sync_pt, base);
+
+	list_del_init(&pt->active_list);
+}
+
 static int android_fence_fill_driver_data(struct fence *fence,
 					  void *data, int size)
 {
@@ -577,6 +584,7 @@ static const struct fence_ops android_fence_ops = {
 	.get_driver_name = android_fence_get_driver_name,
 	.get_timeline_name = android_fence_get_timeline_name,
 	.enable_signaling = android_fence_enable_signaling,
+	.disable_signaling = android_fence_disable_signaling,
 	.signaled = android_fence_signaled,
 	.wait = fence_default_wait,
 	.release = android_fence_release,

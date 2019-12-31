@@ -97,7 +97,10 @@ static int gpu_tmu_notifier(struct notifier_block *notifier,
 
 	platform->voltage_margin = 0;
 	index = *(unsigned long *)v;
-
+	
+	if (index >= TMU_LOCK_CLK_END || index < THROTTLING1)
+		return -ENODEV;
+	
 	if (event == GPU_COLD) {
 		platform->voltage_margin = platform->gpu_default_vol_margin;
 	} else if (event == GPU_NORMAL) {
@@ -113,11 +116,10 @@ static int gpu_tmu_notifier(struct notifier_block *notifier,
 
 	return NOTIFY_OK;
 }
-#ifdef CONFIG_GPU_THERMAL
+
 static struct notifier_block gpu_tmu_nb = {
 	.notifier_call = gpu_tmu_notifier,
 };
-#endif
 #endif /* CONFIG_EXYNOS_THERMAL */
 
 static int gpu_power_on(struct kbase_device *kbdev)
@@ -132,6 +134,9 @@ static int gpu_power_on(struct kbase_device *kbdev)
 	gpu_control_disable_customization(kbdev);
 
 	ret = pm_runtime_resume(kbdev->dev);
+
+	GPU_LOG(DVFS_INFO, LSI_GPU_RPM_RESUME_API, ret, 0u, "power on\n");
+
 	if (ret > 0) {
 		if (platform->early_clk_gating_status) {
 			GPU_LOG(DVFS_INFO, DUMMY, 0u, 0u, "already power on\n");
@@ -148,6 +153,7 @@ static int gpu_power_on(struct kbase_device *kbdev)
 
 static void gpu_power_off(struct kbase_device *kbdev)
 {
+	int ret = 0;
 	struct exynos_context *platform = (struct exynos_context *) kbdev->platform_context;
 	if (!platform)
 		return;
@@ -155,7 +161,9 @@ static void gpu_power_off(struct kbase_device *kbdev)
 	GPU_LOG(DVFS_INFO, DUMMY, 0u, 0u, "power off\n");
 	gpu_control_enable_customization(kbdev);
 
-	pm_schedule_suspend(kbdev->dev, platform->runtime_pm_delay_time);
+	ret = pm_schedule_suspend(kbdev->dev, platform->runtime_pm_delay_time);
+
+	GPU_LOG(DVFS_INFO, LSI_GPU_RPM_SUSPEND_API, ret, 0u, "power off\n");
 
 	if (platform->early_clk_gating_status)
 		gpu_control_disable_clock(kbdev);
@@ -163,6 +171,7 @@ static void gpu_power_off(struct kbase_device *kbdev)
 
 static void gpu_power_suspend(struct kbase_device *kbdev)
 {
+	int ret = 0;
 	struct exynos_context *platform = (struct exynos_context *) kbdev->platform_context;
 	if (!platform)
 		return;
@@ -170,7 +179,9 @@ static void gpu_power_suspend(struct kbase_device *kbdev)
 	GPU_LOG(DVFS_INFO, DUMMY, 0u, 0u, "power suspend\n");
 	gpu_control_enable_customization(kbdev);
 
-	pm_runtime_suspend(kbdev->dev);
+	ret = pm_runtime_suspend(kbdev->dev);
+
+	GPU_LOG(DVFS_INFO, LSI_SUSPEND_CALLBACK, ret, 0u, "power suspend\n");
 
 	if (platform->early_clk_gating_status)
 		gpu_control_disable_clock(kbdev);
@@ -347,9 +358,7 @@ int gpu_notifier_init(struct kbase_device *kbdev)
 
 	platform->voltage_margin = 0;
 #ifdef CONFIG_EXYNOS_THERMAL
-#ifdef CONFIG_GPU_THERMAL
 	exynos_gpu_add_notifier(&gpu_tmu_nb);
-#endif
 #endif /* CONFIG_EXYNOS_THERMAL */
 
 #ifdef CONFIG_MALI_RT_PM

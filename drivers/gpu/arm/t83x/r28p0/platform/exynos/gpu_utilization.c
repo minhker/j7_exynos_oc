@@ -41,11 +41,11 @@ static void gpu_dvfs_update_utilization(struct kbase_device *kbdev)
 #if defined(CONFIG_MALI_DVFS) && defined(CONFIG_CPU_THERMAL_IPA)
 	if (platform->time_tick < platform->gpu_dvfs_time_interval) {
 		platform->time_tick++;
-		platform->time_busy += kbdev->pm.backend.metrics.time_busy;
-		platform->time_idle += kbdev->pm.backend.metrics.time_idle;
+		platform->time_busy += kbdev->pm.backend.metrics.values.time_busy;
+		platform->time_idle += kbdev->pm.backend.metrics.values.time_idle;
 	} else {
-		platform->time_busy = kbdev->pm.backend.metrics.time_busy;
-		platform->time_idle = kbdev->pm.backend.metrics.time_idle;
+		platform->time_busy = kbdev->pm.backend.metrics.values.time_busy;
+		platform->time_idle = kbdev->pm.backend.metrics.values.time_idle;
 		platform->time_tick = 0;
 	}
 #endif /* CONFIG_MALI_DVFS && CONFIG_CPU_THERMAL_IPA */
@@ -123,8 +123,8 @@ int gpu_dvfs_reset_env_data(struct kbase_device *kbdev)
 	DVFS_ASSERT(platform);
 	/* reset gpu utilization value */
 	spin_lock_irqsave(&platform->gpu_dvfs_spinlock, flags);
-	kbdev->pm.backend.metrics.time_idle = kbdev->pm.backend.metrics.time_idle + kbdev->pm.backend.metrics.time_busy;
-	kbdev->pm.backend.metrics.time_busy = 0;
+	kbdev->pm.backend.metrics.values.time_idle = kbdev->pm.backend.metrics.values.time_idle + kbdev->pm.backend.metrics.values.time_busy;
+	kbdev->pm.backend.metrics.values.time_busy = 0;
 	spin_unlock_irqrestore(&platform->gpu_dvfs_spinlock, flags);
 
 	return 0;

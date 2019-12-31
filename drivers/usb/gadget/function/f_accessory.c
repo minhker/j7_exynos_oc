@@ -82,9 +82,13 @@ struct acc_dev {
 	struct usb_ep *ep_in;
 	struct usb_ep *ep_out;
 
-	/* set to 1 when we connect */
+	/* online indicates state of function_set_alt & function_unbind
+	 * set to 1 when we connect
+	 */
 	int online:1;
-	/* Set to 1 when we disconnect.
+
+	/* disconnected indicates state of open & release
+	 * Set to 1 when we disconnect.
 	 * Not cleared until our file is closed.
 	 */
 	int disconnected:1;
@@ -113,9 +117,6 @@ struct acc_dev {
 	wait_queue_head_t read_wq;
 	wait_queue_head_t write_wq;
 	struct usb_request *rx_req[RX_REQ_MAX];
-#ifdef CONFIG_USB_ANDROID_SAMSUNG_CCR_PROTOCOL
-	struct usb_request *tx_req[TX_REQ_MAX];
-#endif
 	int rx_done;
 
 	/* delayed work for handling ACCESSORY_START */
@@ -545,7 +546,6 @@ static int create_bulk_endpoints(struct acc_dev *dev,
 	ep->driver_data = dev;		/* claim the endpoint */
 	dev->ep_out = ep;
 
-	
 	/* now allocate requests for our endpoints */
 	for (i = 0; i < TX_REQ_MAX; i++) {
 		req = acc_request_new(dev->ep_in, BULK_BUFFER_SIZE);
@@ -553,9 +553,6 @@ static int create_bulk_endpoints(struct acc_dev *dev,
 			goto fail;
 		req->complete = acc_complete_in;
 		req_put(dev, &dev->tx_idle, req);
-#ifdef CONFIG_USB_ANDROID_SAMSUNG_CCR_PROTOCOL
-		dev->tx_req[i] = req;
-#endif
 	}
 	for (i = 0; i < RX_REQ_MAX; i++) {
 		req = acc_request_new(dev->ep_out, BULK_BUFFER_SIZE);
@@ -640,19 +637,8 @@ copy_data:
 	dev->rx_done = 0;
 	if (dev->online) {
 		/* If we got a 0-len packet, throw it back and try again. */
-#ifdef CONFIG_USB_ANDROID_SAMSUNG_CCR_PROTOCOL
-		if (req->actual == 0) {
-			if (req->status == -ECONNRESET) {
-				printk(KERN_INFO "usb: acc_read : read request flushed \n");
-				r = -EIO;
-				goto done;
-			} else
-				goto requeue_req;
-		}
-#else
 		if (req->actual == 0)
 			goto requeue_req;
-#endif
 
 		pr_debug("rx %pK %u\n", req, req->actual);
 		xfer = (req->actual < count) ? req->actual : count;
@@ -792,7 +778,7 @@ static int acc_open(struct inode *ip, struct file *fp)
 
 static int acc_release(struct inode *ip, struct file *fp)
 {
-	printk(KERN_INFO "acc_release\n");
+	printk(KERN_INFO "usb: acc_release\n");
 
 	WARN_ON(!atomic_xchg(&_acc_dev->open_excl, 0));
 	/* indicate that we are disconnected
@@ -810,46 +796,6 @@ static long acc_compat_ioctl(struct file *file,
 	return acc_ioctl(file, cmd, (unsigned long)compat_ptr(arg));
 }
 #endif
-#ifdef CONFIG_USB_ANDROID_SAMSUNG_CCR_PROTOCOL
-static int acc_flush(struct file *fp, fl_owner_t id)
-{
-	struct acc_dev *dev = fp->private_data;
-	unsigned long flags;
-	struct usb_request *req;
-	char   test[TX_REQ_MAX]={0};
-	int 	i = 0;
-
-	
-	printk(KERN_INFO "acc_flush\n");
-	if (dev->disconnected || !dev->online) {
-		printk(KERN_INFO "acc_flush  disconnected(%d) online (%d)", dev->disconnected, !dev->online);
-		return -ENODEV;
-	}
-	//
-	// if we are already queued!
-	//
-	if(!dev->rx_done) {
-		usb_ep_dequeue(dev->ep_out, dev->rx_req[0]);
-		printk(KERN_INFO "Try to dequeue the Read request \n");
-	}		
-	spin_lock_irqsave(&dev->lock, flags);
-	list_for_each_entry(req, &dev->tx_idle, list) {
-		for(i=0;i<TX_REQ_MAX;i++) {
-			if(req == dev->tx_req[i]) test[i] = 1;
-		}
-	}
-	for(i=0;i<TX_REQ_MAX;i++) {
-		if(test[i] != 1) {
-			usb_ep_dequeue(dev->ep_in, dev->tx_req[i]);
-			printk(KERN_INFO "Try to dequeue the Write request(%d) \n", i);
-		}
-	}
-	
-	spin_unlock_irqrestore(&dev->lock, flags);
-	
-	return 0;
-}
-#endif
 
 /* file operations for /dev/usb_accessory */
 static const struct file_operations acc_fops = {
@@ -862,9 +808,6 @@ static const struct file_operations acc_fops = {
 #endif
 	.open = acc_open,
 	.release = acc_release,
-#ifdef CONFIG_USB_ANDROID_SAMSUNG_CCR_PROTOCOL
-	.flush = acc_flush,
-#endif
 };
 
 static int acc_hid_probe(struct hid_device *hdev,
@@ -981,7 +924,6 @@ int acc_ctrlrequest(struct usb_composite_dev *cdev,
 		if (b_request == ACCESSORY_GET_PROTOCOL) {
 			*((u16 *)cdev->req->buf) = PROTOCOL_VERSION;
 			value = sizeof(u16);
-			
 			cdev->req->complete = acc_complete_setup_noop;
 			/* clear any string left over from a previous session */
 			memset(dev->manufacturer, 0, sizeof(dev->manufacturer));
@@ -1274,7 +1216,7 @@ static void acc_function_disable(struct usb_function *f)
 	struct usb_composite_dev	*cdev = dev->cdev;
 
 	DBG(cdev, "acc_function_disable\n");
-	acc_set_disconnected(dev);
+	acc_set_disconnected(dev); /* this now only sets disconnected */
 	dev->online = 0; /* so now need to clear online flag here too */
 	usb_ep_disable(dev->ep_in);
 	usb_ep_disable(dev->ep_out);

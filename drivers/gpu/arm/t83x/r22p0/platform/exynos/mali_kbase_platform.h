@@ -59,7 +59,6 @@ typedef enum {
 	GPU_L5,
 	GPU_L6,
 	GPU_L7,
-	GPU_L8,
 	GPU_MAX_LEVEL,
 } gpu_clock_level;
 
@@ -101,7 +100,6 @@ typedef enum {
 	GPU_MAX_CLOCK = 0,
 	GPU_MAX_CLOCK_LIMIT,
 	GPU_MIN_CLOCK,
-	GPU_MIN_CLOCK_LIMIT,
 	GPU_DVFS_START_CLOCK,
 	GPU_DVFS_BL_CONFIG_CLOCK,
 	GPU_GOVERNOR_TYPE,
@@ -267,7 +265,6 @@ struct exynos_context {
 	int gpu_max_clock;
 	int gpu_max_clock_limit;
 	int gpu_min_clock;
-	int gpu_min_clock_limit;
 	int gpu_dvfs_start_clock;
 	int gpu_dvfs_config_clock;
 	int user_max_lock_input;

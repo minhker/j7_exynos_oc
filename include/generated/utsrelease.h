@@ -1,0 +1,1 @@
+#define UTS_RELEASE "3.18.14-MINHKA_Kernel-V2.4-J730F-G"

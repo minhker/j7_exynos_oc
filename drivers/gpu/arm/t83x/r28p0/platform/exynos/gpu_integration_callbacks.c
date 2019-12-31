@@ -464,14 +464,14 @@ void gpu_cacheclean(struct kbase_device *kbdev)
 
     /* use GPU_COMMAND completion solution */
     /* clean the caches */
-    kbase_reg_write(kbdev, GPU_CONTROL_REG(GPU_COMMAND), GPU_COMMAND_CLEAN_CACHES, NULL);
+    kbase_reg_write(kbdev, GPU_CONTROL_REG(GPU_COMMAND), GPU_COMMAND_CLEAN_CACHES);
 
     /* wait for cache flush to complete before continuing */
-    while (--max_loops && (kbase_reg_read(kbdev, GPU_CONTROL_REG(GPU_IRQ_RAWSTAT), NULL) & CLEAN_CACHES_COMPLETED) == 0)
+    while (--max_loops && (kbase_reg_read(kbdev, GPU_CONTROL_REG(GPU_IRQ_RAWSTAT)) & CLEAN_CACHES_COMPLETED) == 0)
 		;
 
     /* clear the CLEAN_CACHES_COMPLETED irq */
-    kbase_reg_write(kbdev, GPU_CONTROL_REG(GPU_IRQ_CLEAR), CLEAN_CACHES_COMPLETED, NULL);
+    kbase_reg_write(kbdev, GPU_CONTROL_REG(GPU_IRQ_CLEAR), CLEAN_CACHES_COMPLETED);
 	KBASE_DEBUG_ASSERT_MSG(kbdev->hwcnt.state != KBASE_INSTR_STATE_CLEANING,
 		"Instrumentation code was cleaning caches, but Job Management code cleared their IRQ - Instrumentation code will now hang.");
 }
@@ -579,7 +579,7 @@ void gpu_debug_pagetable_info(void *ctx, u64 vaddr)
 	KBASE_DEBUG_ASSERT(kctx != NULL);
 
 	dev_err(kctx->kbdev->dev, "Looking up virtual GPU address: 0x%016llX\n", vaddr);
-	gpu_page_table_info_dp_level(kctx, vaddr, kctx->pgd, 0);
+	gpu_page_table_info_dp_level(kctx, vaddr, kctx->mmu.pgd, 0);
 }
 
 #ifdef CONFIG_MALI_SEC_CL_BOOST
@@ -809,13 +809,13 @@ void kbase_fence_del_timer(void *atom)
 static void dvfs_callback(struct work_struct *data)
 {
 	unsigned long flags;
-	struct kbasep_pm_metrics_data *metrics;
+	struct kbasep_pm_metrics_state *metrics;
 	struct kbase_device *kbdev;
 	struct exynos_context *platform;
 
 	KBASE_DEBUG_ASSERT(data != NULL);
 
-	metrics = container_of(data, struct kbasep_pm_metrics_data, work.work);
+	metrics = container_of(data, struct kbasep_pm_metrics_state, work.work);
 
 	kbdev = metrics->kbdev;
 	KBASE_DEBUG_ASSERT(kbdev != NULL);
@@ -891,16 +891,16 @@ int gpu_pm_get_dvfs_utilisation(struct kbase_device *kbdev, int *util_gl_share, 
 
 	if (kbdev->pm.backend.metrics.gpu_active) {
 		u32 ns_time = (u32) (ktime_to_ns(diff) >> KBASE_PM_TIME_SHIFT);
-		kbdev->pm.backend.metrics.time_busy += ns_time;
-		kbdev->pm.backend.metrics.busy_cl[0] += ns_time * kbdev->pm.backend.metrics.active_cl_ctx[0];
-		kbdev->pm.backend.metrics.busy_cl[1] += ns_time * kbdev->pm.backend.metrics.active_cl_ctx[1];
+		kbdev->pm.backend.metrics.values.time_busy += ns_time;
+		kbdev->pm.backend.metrics.values.busy_cl[0] += ns_time * kbdev->pm.backend.metrics.active_cl_ctx[0];
+		kbdev->pm.backend.metrics.values.busy_cl[1] += ns_time * kbdev->pm.backend.metrics.active_cl_ctx[1];
 		kbdev->pm.backend.metrics.time_period_start = now;
 	} else {
-		kbdev->pm.backend.metrics.time_idle += (u32) (ktime_to_ns(diff) >> KBASE_PM_TIME_SHIFT);
+		kbdev->pm.backend.metrics.values.time_idle += (u32) (ktime_to_ns(diff) >> KBASE_PM_TIME_SHIFT);
 		kbdev->pm.backend.metrics.time_period_start = now;
 	}
 	spin_unlock_irqrestore(&kbdev->pm.backend.metrics.lock, flags);
-	if (kbdev->pm.backend.metrics.time_idle + kbdev->pm.backend.metrics.time_busy == 0) {
+	if (kbdev->pm.backend.metrics.values.time_idle + kbdev->pm.backend.metrics.values.time_busy == 0) {
 		/* No data - so we return NOP */
 		utilisation = -1;
 #if !defined(CONFIG_MALI_SEC_CL_BOOST)
@@ -914,24 +914,24 @@ int gpu_pm_get_dvfs_utilisation(struct kbase_device *kbdev, int *util_gl_share, 
 		goto out;
 	}
 
-	utilisation = (100 * kbdev->pm.backend.metrics.time_busy) /
-			(kbdev->pm.backend.metrics.time_idle +
-			 kbdev->pm.backend.metrics.time_busy);
+	utilisation = (100 * kbdev->pm.backend.metrics.values.time_busy) /
+			(kbdev->pm.backend.metrics.values.time_idle +
+			 kbdev->pm.backend.metrics.values.time_busy);
 
 #if !defined(CONFIG_MALI_SEC_CL_BOOST)
-	busy = kbdev->pm.backend.metrics.busy_gl +
-		kbdev->pm.backend.metrics.busy_cl[0] +
-		kbdev->pm.backend.metrics.busy_cl[1];
+	busy = kbdev->pm.backend.metrics.values.busy_gl +
+		kbdev->pm.backend.metrics.values.busy_cl[0] +
+		kbdev->pm.backend.metrics.values.busy_cl[1];
 
 	if (busy != 0) {
 		if (util_gl_share)
 			*util_gl_share =
-				(100 * kbdev->pm.backend.metrics.busy_gl) / busy;
+				(100 * kbdev->pm.backend.metrics.values.busy_gl) / busy;
 		if (util_cl_share) {
 			util_cl_share[0] =
-				(100 * kbdev->pm.backend.metrics.busy_cl[0]) / busy;
+				(100 * kbdev->pm.backend.metrics.values.busy_cl[0]) / busy;
 			util_cl_share[1] =
-				(100 * kbdev->pm.backend.metrics.busy_cl[1]) / busy;
+				(100 * kbdev->pm.backend.metrics.values.busy_cl[1]) / busy;
 		}
 	} else {
 		if (util_gl_share)
@@ -971,12 +971,12 @@ int gpu_pm_get_dvfs_utilisation(struct kbase_device *kbdev, int *util_gl_share, 
  out:
 
 	spin_lock_irqsave(&kbdev->pm.backend.metrics.lock, flags);
-	kbdev->pm.backend.metrics.time_idle = 0;
-	kbdev->pm.backend.metrics.time_busy = 0;
+	kbdev->pm.backend.metrics.values.time_idle = 0;
+	kbdev->pm.backend.metrics.values.time_busy = 0;
 #if !defined(CONFIG_MALI_SEC_CL_BOOST)
-	kbdev->pm.backend.metrics.busy_cl[0] = 0;
-	kbdev->pm.backend.metrics.busy_cl[1] = 0;
-	kbdev->pm.backend.metrics.busy_gl = 0;
+	kbdev->pm.backend.metrics.values.busy_cl[0] = 0;
+	kbdev->pm.backend.metrics.values.busy_cl[1] = 0;
+	kbdev->pm.backend.metrics.values.busy_gl = 0;
 #else
 	atomic_set(&kbdev->pm.backend.metrics.time_compute_jobs, 0);
 	atomic_set(&kbdev->pm.backend.metrics.time_vertex_jobs, 0);

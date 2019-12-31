@@ -1196,7 +1196,17 @@ static int dw_mci_exynos_execute_tuning(struct dw_mci_slot *slot, u32 opcode,
 	 * And that mid is odd number, means the selected case includes
 	 * using fine tuning.
 	 */
-
+	
+	/* 
+	 * This config should be applied only to T58x.
+	 */
+#ifdef CONFIG_MMC_TUNING_ALL_PASS_QUIRK 
+	if (!tuned && (all_pass_count >=2)) {
+		best_sample = 0x7;
+		tuned = true; 
+	}
+#endif
+ 
 	best_sample_ori = best_sample;
 	best_sample /= 2;
 
@@ -1252,7 +1262,7 @@ static ssize_t sd_detection_cmd_show(struct device *dev,
 		if (priv->sec_sd_slot_type > 0 && !gpio_is_valid(priv->cd_gpio))
 			goto gpio_error;
 
-		if (gpio_get_value(priv->cd_gpio)
+		if (gpio_get_value(priv->cd_gpio) ^ (host->pdata->use_gpio_invert)
 				&& priv->sec_sd_slot_type == SEC_HYBRID_SD_SLOT) {
 			dev_info(host->dev, "SD slot tray Removed.\n");
 			return sprintf(buf, "Notray\n");

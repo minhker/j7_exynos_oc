@@ -1025,11 +1025,11 @@
 
 		freq_tab_count = <6>;
 
-		freq_clip_max_0 = <1146000>;
-		freq_clip_max_1 = <1001000>;
-		freq_clip_max_2 = <845000>;
-		freq_clip_max_3 = <676000>;
-		freq_clip_max_4 = <450000>;
+		freq_clip_max_0 = <1246000>;
+		freq_clip_max_1 = <1146000>;
+		freq_clip_max_2 = <1001000>;
+		freq_clip_max_3 = <845000>;
+		freq_clip_max_4 = <676000>;
 		freq_clip_max_5 = <343000>;
 		cooling_level_0 = <96>;
 		cooling_level_1 = <96>;
@@ -1041,10 +1041,10 @@
 		/* gpu cooling related table */
 		gpu_idx_num = <6>;
 		/* flags, driver_data(index), frequency */
-		gpu_cooling_table = < 0 0 1146000
-				      0 1 1001000
-				      0 2 676000
-				      0 3 450000
+		gpu_cooling_table = < 0 0 1246000
+				      0 1 1146000
+				      0 2 1001000
+				      0 3 676000
 				      0 4 343000
 				      0 5 TABLE_END>;
 	};

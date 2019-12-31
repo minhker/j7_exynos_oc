@@ -357,10 +357,10 @@ static void asv_set_freq_limit(void)
 notfused:
 
 #ifdef PWRCAL_TARGET_LINUX
-	//asv_dvfs_cpucl0->table->max_freq = 1794000;
-	//asv_dvfs_cpucl1->table->max_freq = 1924000;
-	//asv_dvfs_g3d->table->max_freq = 1300000;
-	//asv_dvfs_mif->table->max_freq = 902000;
+	asv_dvfs_cpucl0->table->max_freq = 1924000;
+	asv_dvfs_cpucl1->table->max_freq = 1924000;
+	asv_dvfs_g3d->table->max_freq = 1246000;
+	asv_dvfs_mif->table->max_freq = 902000;
 #endif
 	return;
 }
@@ -635,7 +635,7 @@ static int dvfscpucl0_get_asv_table(unsigned int *table)
 		if(lv<=3)
 			{
 			table[0] = 1300000;//130
-			table[1] = 1225000;//130
+			table[1] = 1300000;//130
 			table[2] = 1112500-75000+6250;//1131250
 			table[3] = 1043750+6250-75000;
 			}
@@ -677,7 +677,7 @@ static int dfscpu_set_ema(unsigned int volt)
 		ema_temp = (asv_tbl_info.cpu_cl_ema << 3) | (asv_tbl_info.cpu_cl_emaw << 1) | asv_tbl_info.cpu_cl_emas;
 		cpu_ema = (ema_temp << 12) | (ema_temp << 6) | ema_temp;
 		if (cpu_ema == 0)
-			cpu_ema = 0x1B6D2;//0x1B6D2
+			cpu_ema = 0x1B6D2;
 		pwrcal_writel(CPUCL0_EMA_CON, cpu_ema);
 		pwrcal_writel(CPUCL1_EMA_CON, cpu_ema);
 		}

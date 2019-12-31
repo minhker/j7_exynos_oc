@@ -734,45 +734,11 @@ void clk_pll_set_rate_table(struct pwrcal_pll *pll)
 	for (i = 0; i < pll_unit->num_of_frequency; ++i) {
 		pll_frequency = &pll_unit->frequency_list[i];
 
-if(pll_frequency->frequency==1001)
-{
-		
-		pll_frequency->frequency=949;
-		pll_frequency->p=4;
-		pll_frequency->m=146;
-		pll_frequency->s=0;
-		pll_frequency->k=0;
-		pll_unit->frequency_list[i]=*pll_frequency;
-		i--;
-}
-if(pll_frequency->frequency==845000)
-{
-		
-		pll_frequency->frequency=910000;
-		pll_frequency->p=4;
-		pll_frequency->m=140;
-		pll_frequency->s=0;
-		pll_frequency->k=0;
-	pll_unit->frequency_list[i]=*pll_frequency;
-i--;
-}
-if(pll_frequency->frequency==728000000)
-{
-		
-		pll_frequency->frequency=858000000;
-		pll_frequency->p=4;
-		pll_frequency->m=132;
-		pll_frequency->s=0;
-		pll_frequency->k=0;
-pll_unit->frequency_list[i]=*pll_frequency;
-i--;
-}
 		pll_rate_table[i].rate = pll_frequency->frequency;
 		pll_rate_table[i].pdiv = pll_frequency->p;
 		pll_rate_table[i].mdiv = pll_frequency->m;
 		pll_rate_table[i].sdiv = pll_frequency->s;
 		pll_rate_table[i].kdiv = pll_frequency->k;
-
 	}
 
 	pll->rate_table = pll_rate_table;

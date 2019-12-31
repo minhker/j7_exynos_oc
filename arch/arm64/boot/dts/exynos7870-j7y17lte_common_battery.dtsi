@@ -41,7 +41,6 @@
 			fuelgauge,capacity_max_margin = <200>; //150
 			fuelgauge,capacity_min = <0>;
 			fuelgauge,capacity_calculation_type = <28>;
-/* test fr a7y17 */			fuelgauge,capacity_full = <3600>;
 			fuelgauge,fg_log_enable = <1>;
 			fuelgauge,evt2_val = <0x07>;
 			fuelgauge,type_str = "SDI";
@@ -350,8 +349,8 @@
 		battery,swelling_high_rechg_voltage = <4100>;//4000
 		battery,swelling_low_rechg_voltage = <4050>; //4000
 
-		battery,siop_input_limit_current = <2050>; //1550
-		battery,siop_charging_limit_current = <2000>; //1000
+		battery,siop_input_limit_current = <2050>;
+		battery,siop_charging_limit_current = <2000>;
 
 		/* cycle, chg_float_voltage, recharge_condition_vcell, full_condition_vcell, full_condition_soc */
         battery,age_data = <0 4370 4300 4310 93 //4350 4250 4250
@@ -374,7 +373,6 @@
 		battery,chg_polarity_en = <0>;
 		battery,chg_gpio_status = <0>;
 		battery,chg_polarity_status = <0>;
-		battery,chg_float_voltage = <4400>; //4380
+		battery,chg_float_voltage = <4400>;
 	};
 };
-

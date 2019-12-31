@@ -37,6 +37,14 @@
 			     <0 51 4>,
 			     <0 52 4>,
 			     <0 53 4>;
+		interrupt-affinity = <&cpu4>,
+				<&cpu5>,
+				<&cpu6>,
+				<&cpu7>,
+				<&cpu0>,
+				<&cpu1>,
+				<&cpu2>,
+				<&cpu3>;
 	};
 
 	aliases {
@@ -101,56 +109,56 @@
 		#address-cells = <2>;
 		#size-cells = <0>;
 
-		cpu@0 {
+		cpu0:cpu@0 {
 			device_type = "cpu";
 			compatible = "arm,cortex-a53", "arm,armv8";
 			reg = <0x0 0x0>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_BOOT>;
 		};
-		cpu@1 {
+		cpu1:cpu@1 {
 			device_type = "cpu";
 			compatible = "arm,cortex-a53", "arm,armv8";
 			reg = <0x0 0x1>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_BOOT>;
 		};
-		cpu@2 {
+		cpu2:cpu@2 {
 			device_type = "cpu";
 			compatible = "arm,cortex-a53", "arm,armv8";
 			reg = <0x0 0x2>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_BOOT>;
 		};
-		cpu@3 {
+		cpu3:cpu@3 {
 			device_type = "cpu";
 			compatible = "arm,cortex-a53", "arm,armv8";
 			reg = <0x0 0x3>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_BOOT>;
 		};
-		cpu@100 {
+		cpu4:cpu@100 {
 			device_type = "cpu";
 			compatible = "arm,cortex-a53", "arm,armv8";
 			reg = <0x0 0x100>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_NONBOOT>;
 		};
-		cpu@101 {
+		cpu5:cpu@101 {
 			device_type = "cpu";
 			compatible = "arm,cortex-a53", "arm,armv8";
 			reg = <0x0 0x101>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_NONBOOT>;
 		};
-		cpu@102 {
+		cpu6:cpu@102 {
 			device_type = "cpu";
 			compatible = "arm,cortex-a53", "arm,armv8";
 			reg = <0x0 0x102>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_NONBOOT>;
 		};
-		cpu@103 {
+		cpu7:cpu@103 {
 			device_type = "cpu";
 			compatible = "arm,cortex-a53", "arm,armv8";
 			reg = <0x0 0x103>;
@@ -426,7 +434,7 @@
 		/* CL1 */
 		cl1_idx_num = <17>;
 		cl1_max_support_idx = <2>; 
-		cl1_min_support_idx = <16>;
+		cl1_min_support_idx = <10>;
 		cl1_boot_max_qos = <1794000>;
 		cl1_boot_min_qos = <1794000>;
 		cl1_boot_lock_time = <40000000>;
@@ -436,44 +444,43 @@
 
 		/* CL0 table ->	 idx   freq    volt   bus_lock */
 		cl0_dvfs_domain_name = "dvfs_cpucl0";
-		cl0_dvfs_table = < 0  2002000  1300000   933000
-				   1  1924000  1250000	933000
-				   2  1794000  1200000	933000
-				   3  1690000  1150000	933000
-				   4  1586000  1100000	933000
-				   5  1482000  1050000	933000
-				   6  1352000  1000000	933000
-				   7  1248000  950000	933000
-				   8  1144000  900000	933000
-				   9  1014000  900000	933000
-				  10   902000  900000	933000
-				  11   839000  900000	933000
+		cl0_dvfs_table = < 0  2002000  900000   933000
+				   1  1924000  900000	933000
+				   2  1794000  900000	933000
+				   3  1690000  900000	1066000
+				   4  1586000  890000	1066000
+				   5  1482000  880000	933000
+				   6  1352000  870000	933000
+				   7  1248000  860000	933000
+				   8  1144000  850000	933000
+				   9  1014000  840000	933000
+				  10   902000  820000	933000
+				  11   839000  810000	933000
 				  12   757000  800000	450000
-				  13   676000  800000	450000
-				  14   546000  800000	450000
-				  15   449000  800000	0
-				  16   343000  800000	0 >;
+				  13   676000  780000	450000
+				  14   546000  760000	450000
+				  15   449000  740000	450000
+				  16   343000  720000	450000>;
 
 		/* CL1 table ->	 idx  freq    volt   bus_lock */
 		cl1_dvfs_domain_name = "dvfs_cpucl1";
-		cl1_dvfs_table = < 0  2002000  1300000   933000
-				   1  1924000  1250000	933000
-				   2  1794000  1200000	933000
-				   3  1690000  1150000	933000
-				   4  1586000  1100000	933000
-				   5  1482000  1050000	933000
-				   6  1352000  1000000	933000
-				   7  1248000  950000	933000
-				   8  1144000  900000	933000
-				   9  1014000  900000	933000
-				  10   902000  900000	933000
-				  11   839000  900000	933000
+		cl1_dvfs_table = < 0  2002000  900000   933000
+				   1  1924000  900000	933000
+				   2  1794000  900000	933000
+				   3  1690000  900000	1066000
+				   4  1586000  890000	1066000
+				   5  1482000  880000	933000
+				   6  1352000  870000	933000
+				   7  1248000  860000	933000
+				   8  1144000  850000	933000
+				   9  1014000  840000	933000
+				  10   902000  820000	933000
+				  11   839000  810000	933000
 				  12   757000  800000	450000
-				  13   676000  800000	450000
-				  14   546000  800000	450000
-				  15   449000  800000	0
-				  16   343000  800000	0 >;
-
+				  13   676000  780000	450000
+				  14   546000  760000	450000
+				  15   449000  740000	450000
+				  16   343000  720000	450000>;	
 	};
 
 	smc_info: mcinfo@10400000 {
@@ -492,13 +499,14 @@
 		clock-names = "dvfs_mif", "dvfs_mif_sw";
 		devfreq_type = "mif";
 		devfreq_domain_name = "dvfs_mif";
-		opp_list_length = <6>;
+		opp_list_length = <7>;
 		opp_list = < 0 902000 900000
-			     1 836000 900000
+			     1 825000 900000
 			     2 728000 900000
 			     3 676000 900000
 			     4 546000 900000
-			     5 451000 900000>;
+			     5 451000 900000
+			     6 275000 900000>;
 
 		/* initial_freq, default_qos, suspend_freq, cal_qos_max, min_freq, max_freq */
 		freq_info = <902000 451000 451000 902000 451000 902000>;
@@ -537,10 +545,10 @@
 		devfreq_domain_name = "dvfs_int";
 		opp_list_length = <4>;
 		/* idx freq volt */
-		opp_list = <0 400000 700000
-			    1 334000 700000
-			    2 200000 700000
-			    3 134000 700000>;
+		opp_list = <0 400000 875000
+			    1 334000 875000
+			    2 200000 875000
+			    3 134000 875000>;
 
 		/* <initial_freq, default_qos, suspend_freq, cal_qos_max, min, max> */
 		freq_info = <400000 134000 134000 400000 134000 400000>;
@@ -617,16 +625,16 @@
 		clock-names = "dvfs_cam";
 		devfreq_type = "cam";
 		devfreq_domain_name = "dvfs_cam";
-		opp_list_length = <3>;
-		opp_list = <0 533000 700000
-			    1 334000 700000
-			    2 167000 700000>;
+		opp_list_length = <2>;
+		opp_list = <0 533000 900000
+			    1 334000 900000
+			    2 167000 900000>;
 
 		/* <initial, default_qos, suspend_freq, cal_qos_max, min, max> */
-		freq_info = <533000 167000 167000 533000 167000 533000>;
+		freq_info = <167000 167000 167000 533000 167000 533000>;
 
 		/* PM QoS */
-		boot_qos_timeout = <40>;
+		boot_qos_timeout = <0>;
 
 		/* default dev profile */
 		use_get_dev = "false";
@@ -634,8 +642,8 @@
 
 		/* governor data */
 		gov_name = "simple_ondemand";
-		upthreshold = <93>;
-		downdifferential = <7>;
+		upthreshold = <95>;
+		downdifferential = <5>;
 		multi_weight = <100>;
 
 		/* regulator */
@@ -1577,6 +1585,17 @@
 		smfc,int_qos_minlock = <400000>;
 	};
 
+	reserved-memory {
+		#address-cells = <2>;
+		#size-cells = <1>;
+		ranges;
+
+		fb_handover: bootloader_fb {
+			compatible = "exynos,fb_handover";
+			reg = <0x0 0x67000000 0xA00000>;
+		};
+	};
+
 	dsim_0: dsim@14800000 {
 		compatible = "samsung,exynos8-mipi-dsi";
 		reg = <0x0 0x14800000 0x100>;
@@ -1630,6 +1649,8 @@
 		pinctrl-names = "decon_te_on", "decon_te_off";
 		pinctrl-0 = <&decon_te_on>;
 		pinctrl-1 = <&decon_te_off>;
+
+		memory-region = <&fb_handover>;
 
 		cam-stat {
 			/* ISP_STATUS register */
@@ -1928,9 +1949,9 @@
 
 			/* Frequency table */
 			/* for level	:	1_Head, 2_Head, 2_Tail */
-			input_booster,cpu_freqs = <1248000 1144000 1014000>;
+			input_booster,cpu_freqs = <1248000 1248000 1014000>;
 			input_booster,hmp_boost = <1 1 0>;
-			input_booster,kfc_freqs = <1248000 1144000 1014000>;
+			input_booster,kfc_freqs = <1248000 1248000 1014000>;
 			input_booster,mif_freqs = <0 0 0>;
 			input_booster,int_freqs = <0 0 0>;
 
@@ -1943,20 +1964,20 @@
 			input_booster,label = "MULTITOUCH";
 			input_booster,type = <3>;	/* BOOSTER_DEVICE_MULTITOUCH */
 
-			input_booster,levels = <1 2 3>;
+			input_booster,levels = <1 2>;
 
 			/* Frequency table */
 			/* for level	:	1_Head 2_Tail*/
-			input_booster,cpu_freqs = <1482000 1248000 1014000>;
-			input_booster,hmp_boost = <1 1 0>;
-			input_booster,kfc_freqs = <1482000 1248000 1014000>;
-			input_booster,mif_freqs = <0 0 0>;
-			input_booster,int_freqs = <0 0 0>;
+			input_booster,cpu_freqs = <1482000 1014000>;
+			input_booster,hmp_boost = <1 1>;
+			input_booster,kfc_freqs = <1482000 1014000>;
+			input_booster,mif_freqs = <0 0>;
+			input_booster,int_freqs = <0 0>;
 
 			/* Time table */
-			input_booster,head_times = <1000 500 0>;
-			input_booster,tail_times = <0 250 500>;
-			input_booster,phase_times = <0 0 0>;
+			input_booster,head_times = <1000 0>;
+			input_booster,tail_times = <0 500>;
+			input_booster,phase_times = <0 0>;
 		};
 		booster_key@5 {
 			input_booster,label = "KEYBOARD";
@@ -1966,9 +1987,9 @@
 
 			/* Frequency table */
 			/* for level	:	1_Head 2_Tail*/
-			input_booster,cpu_freqs = <1248000 1144000>;
+			input_booster,cpu_freqs = <1248000 1248000>;
 			input_booster,hmp_boost = <1 1>;
-			input_booster,kfc_freqs = <1248000 1144000>;
+			input_booster,kfc_freqs = <1248000 1248000>;
 			input_booster,mif_freqs = <0 0>;
 			input_booster,int_freqs = <0 0>;
 
@@ -1985,9 +2006,9 @@
 
 			/* Frequency table */
 			/* for level	:	1_Head 2_Tail*/
-			input_booster,cpu_freqs = <1144000 1014000>;
+			input_booster,cpu_freqs = <1248000 1014000>;
 			input_booster,hmp_boost = <1 0>;
-			input_booster,kfc_freqs = <1144000 1014000>;
+			input_booster,kfc_freqs = <1248000 1014000>;
 			input_booster,mif_freqs = <0 0>;
 			input_booster,int_freqs = <0 0>;
 
@@ -2004,9 +2025,9 @@
 
 			/* Frequency table */
 			/* for level	:	1_Head 2_Tail*/
-			input_booster,cpu_freqs = <1144000 0>;
+			input_booster,cpu_freqs = <1248000 0>;
 			input_booster,hmp_boost = <1 0>;
-			input_booster,kfc_freqs = <1144000 0>;
+			input_booster,kfc_freqs = <1248000 0>;
 			input_booster,mif_freqs = <0 0>;
 			input_booster,int_freqs = <0 0>;
 
@@ -2023,9 +2044,9 @@
 
 			/* Frequency table */
 			/* for level	:	1_Head 2_Tail*/
-			input_booster,cpu_freqs = <1144000 1014000>;
+			input_booster,cpu_freqs = <1248000 1014000>;
 			input_booster,hmp_boost = <1 0>;
-			input_booster,kfc_freqs = <1144000 1014000>;
+			input_booster,kfc_freqs = <1248000 1014000>;
 			input_booster,mif_freqs = <0 0>;
 			input_booster,int_freqs = <0 0>;
 
@@ -2041,4 +2062,3 @@
 		compatible = "samsung,exynos-fips-fmp";
 	};
 };
-
